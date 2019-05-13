@@ -1,23 +1,26 @@
 const canvas = document.querySelector("#canvas_enemies");
 const ctx = canvas.getContext("2d");
-const width = (canvas.width)
-const height = (canvas.height)
+const width = (canvas.width);
+const height = (canvas.height);
 
+var gExplC = document.getElementById("canvas_explosions");
 var gExpl = document.getElementById("canvas_explosions").getContext('2d');
 var gPlanet = document.getElementById("canvas_planet").getContext('2d');
 var planet = new Planet(0, 0);
 
-function Explosion(x, y) {
-    this.x = x;
-    this.y = y;
-    this.width = 50;
-    this.height = 50;
-    this.image = new Image();
-    this.render = function() {
-        this.image.src = "https://jjwallace.github.io/assets/examples/images/boom.png"//"images/explossion.png";
-        gExpl.drawImage(this.image, this.x, this.y, this.width, this.height);
-    };
-}
+var explosion = null;
+
+// function Explosion(x, y) {
+//     this.x = x;
+//     this.y = y;
+//     this.width = 50;
+//     this.height = 50;
+//     this.image = new Image();
+//     this.render = function() {
+//         this.image.src = "https://jjwallace.github.io/assets/examples/images/boom.png"//"images/explossion.png";
+//         gExpl.drawImage(this.image, this.x, this.y, this.width, this.height);
+//     };
+// }
 
 function Planet(x, y) {
     this.x = x;
@@ -29,6 +32,49 @@ function Planet(x, y) {
         this.image.src = "images/planet.png";
         gPlanet.drawImage(this.image, this.x, this.y, this.width, this.height);
     };
+}
+
+function Explosion(x, y) {
+    this.x = x;
+    this.y = y;
+    this.width = 256;
+    this.height = 256;
+    this.scale = 1;
+    this.scaledWidth = this.scale * this.width;
+    this.scaledHeight = this.scale * this.height;
+    this.i = 0;
+    this.sheetRow = 0;
+    this.sheetLengthX = 8;
+    this.sheetLengthY = 8;
+    this.image = new Image();
+    this.image.src = 'https://jjwallace.github.io/assets/examples/images/boom.png';
+
+    this.render = function(frameX, frameY, canvasX, canvasY) {
+        gExpl.drawImage(this.image,
+                        frameX * this.width, frameY * this.height,
+                        this.width,
+                        this.height,
+                        canvasX,
+                        canvasY,
+                        this.scaledWidth,
+                        this.scaledHeight);
+    };
+
+    this.step = function() {
+        gExpl.clearRect(0, 0, gExplC.width, gExplC.height); //TODO only where explosion is
+        if (this.sheetRow <= this.sheetLengthY) {
+            this.render(this.i, this.sheetRow, this.x-(this.width/2), this.y-(this.height/2));
+            this.i++;
+            if (this.i >= this.sheetLengthX) {
+                this.i = 0;
+                this.sheetRow++;
+            }
+
+            if (this.sheetRow > this.sheetLengthY) {
+                explosion = null;
+            }
+        }
+    }
 }
 
 
@@ -93,8 +139,11 @@ class nBodyProblem {
                             //console.log(pixelData[zx + 3].toString());
 
                             if (pixelData[zx + 3].toString() != 0) {
-                                var explosion = new Explosion(indexX, indexY);
-                                explosion.render();
+                                explosion = new Explosion(indexX, indexY);
+
+                                //window.requestAnimationFrame(explosion.go);
+
+                                //explosion.render();
                                 this.masses.splice(j, 1);
                                 break;
                             }
@@ -289,6 +338,11 @@ function render() {
 const animate = () => {
     render();
     rotatePlanet();
+
+    if (explosion != null) {
+
+        explosion.step();
+    }
 
     innerSolarSystem
         .updatePositionVectors()
