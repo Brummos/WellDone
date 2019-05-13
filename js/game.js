@@ -8,8 +8,10 @@ var gExpl = document.getElementById("canvas_explosions").getContext('2d');
 var gPlanet = document.getElementById("canvas_planet").getContext('2d');
 var planet = new Planet(0, 0);
 
-var explosion = null;
+//var explosion = null;
 var explosionCount = 0;
+
+var explosions = [];
 
 function Planet(x, y) {
     this.x = x;
@@ -45,19 +47,11 @@ function Explosion(x, y) {
     this.canvas.style.zzIndex   = "8";
 //    canvas.style.position = "absolute";
     this.canvas.style.border   = "1px solid black";
-
     document.getElementsByTagName("body")[0].appendChild(this.canvas);
-
-    this.cursorLayer = document.getElementById("canvas_explosion" + explosionCount);
-
-    console.log(this.cursorLayer);
-
-// below is optional
-
-    this.ctx = this.canvas.getContext("2d");
+    this.canvasContext = this.canvas.getContext("2d");
 
     this.render = function(frameX, frameY, canvasX, canvasY) {
-        this.ctx.drawImage(this.image,
+        this.canvasContext.drawImage(this.image,
                         frameX * this.width, frameY * this.height,
                         this.width,
                         this.height,
@@ -68,7 +62,7 @@ function Explosion(x, y) {
     };
 
     this.tick = function() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.width); //TODO only where explosion is
+        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.width); //TODO only where explosion is
         if (this.sheetRow <= this.sheetLengthY) {
             this.render(this.i, this.sheetRow, this.x-(this.width/2), this.y-(this.height/2));
             this.i++;
@@ -78,17 +72,19 @@ function Explosion(x, y) {
             }
 
             if (this.sheetRow > this.sheetLengthY) {
-                explosion = null; //TODO makes it stop refreshing the other explosions
+                //explosion = null; //TODO makes it stop refreshing the other explosions
+
+                //TODO slice the array to remove it
+                 var index = explosions.indexOf(this);
+                 explosions.splice(index, 1);
+                 explosionCount--;
 
                 document.getElementsByTagName("body")[0].removeChild(this.canvas);
-                explosionCount--;
+
             }
         }
     }
 }
-
-
-
 
 class nBodyProblem {
     constructor(params) {
@@ -147,7 +143,10 @@ class nBodyProblem {
                             //console.log(pixelData[zx + 3].toString());
 
                             if (pixelData[zx + 3].toString() != 0) {
-                                explosion = new Explosion(indexX, indexY);
+
+                                explosions.push(new Explosion(indexX, indexY));
+
+                                //explosion = new Explosion(indexX, indexY); //TODO array van maken
                                 explosionCount++;
                                 this.masses.splice(j, 1);
                                 break;
@@ -342,9 +341,8 @@ const animate = () => {
     render();
     rotatePlanet();
 
-    if (explosion != null) {
-
-        explosion.tick();
+    for (i in explosions) {
+        explosions[i].tick();
     }
 
     innerSolarSystem
