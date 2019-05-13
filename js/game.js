@@ -9,18 +9,7 @@ var gPlanet = document.getElementById("canvas_planet").getContext('2d');
 var planet = new Planet(0, 0);
 
 var explosion = null;
-
-// function Explosion(x, y) {
-//     this.x = x;
-//     this.y = y;
-//     this.width = 50;
-//     this.height = 50;
-//     this.image = new Image();
-//     this.render = function() {
-//         this.image.src = "https://jjwallace.github.io/assets/examples/images/boom.png"//"images/explossion.png";
-//         gExpl.drawImage(this.image, this.x, this.y, this.width, this.height);
-//     };
-// }
+var explosionCount = 0;
 
 function Planet(x, y) {
     this.x = x;
@@ -49,8 +38,26 @@ function Explosion(x, y) {
     this.image = new Image();
     this.image.src = 'https://jjwallace.github.io/assets/examples/images/boom.png';
 
+    this.canvas = document.createElement('canvas');
+    this.canvas.id = "canvas_explosion" + explosionCount;
+    this.canvas.width  = 1000;
+    this.canvas.height = 1000;
+    this.canvas.style.zzIndex   = "8";
+//    canvas.style.position = "absolute";
+    this.canvas.style.border   = "1px solid black";
+
+    document.getElementsByTagName("body")[0].appendChild(this.canvas);
+
+    this.cursorLayer = document.getElementById("canvas_explosion" + explosionCount);
+
+    console.log(this.cursorLayer);
+
+// below is optional
+
+    this.ctx = this.canvas.getContext("2d");
+
     this.render = function(frameX, frameY, canvasX, canvasY) {
-        gExpl.drawImage(this.image,
+        this.ctx.drawImage(this.image,
                         frameX * this.width, frameY * this.height,
                         this.width,
                         this.height,
@@ -60,8 +67,8 @@ function Explosion(x, y) {
                         this.scaledHeight);
     };
 
-    this.step = function() {
-        gExpl.clearRect(0, 0, gExplC.width, gExplC.height); //TODO only where explosion is
+    this.tick = function() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.width); //TODO only where explosion is
         if (this.sheetRow <= this.sheetLengthY) {
             this.render(this.i, this.sheetRow, this.x-(this.width/2), this.y-(this.height/2));
             this.i++;
@@ -71,7 +78,10 @@ function Explosion(x, y) {
             }
 
             if (this.sheetRow > this.sheetLengthY) {
-                explosion = null;
+                explosion = null; //TODO makes it stop refreshing the other explosions
+
+                document.getElementsByTagName("body")[0].removeChild(this.canvas);
+                explosionCount--;
             }
         }
     }
@@ -116,8 +126,6 @@ class nBodyProblem {
     }
 
     updateAccelerationVectors() {
-        const massesLen = this.masses.length;
-
         for (let i = 0; i < this.masses.length; i++) {
             let ax = 0;
             let ay = 0;
@@ -140,10 +148,7 @@ class nBodyProblem {
 
                             if (pixelData[zx + 3].toString() != 0) {
                                 explosion = new Explosion(indexX, indexY);
-
-                                //window.requestAnimationFrame(explosion.go);
-
-                                //explosion.render();
+                                explosionCount++;
                                 this.masses.splice(j, 1);
                                 break;
                             }
@@ -156,9 +161,7 @@ class nBodyProblem {
 
                     const distSq = dx * dx + dy * dy + dz * dz;
 
-                    const f =
-                        (this.g * massJ.m) /
-                        (distSq * Math.sqrt(distSq + this.softeningConstant));
+                    const f = (this.g * massJ.m) / (distSq * Math.sqrt(distSq + this.softeningConstant));
 
                     ax += dx * f;
                     ay += dy * f;
@@ -341,7 +344,7 @@ const animate = () => {
 
     if (explosion != null) {
 
-        explosion.step();
+        explosion.tick();
     }
 
     innerSolarSystem
