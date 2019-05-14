@@ -1,17 +1,36 @@
+gameStateEnum = {
+    MENU : 'MENU',
+    PLAY : 'PLAY',
+}
+
 const canvas = document.querySelector("#canvas_enemies");
 const ctx = canvas.getContext("2d");
 const width = (canvas.width);
 const height = (canvas.height);
 
-var gExplC = document.getElementById("canvas_explosions");
-var gExpl = document.getElementById("canvas_explosions").getContext('2d');
+var startBtn = document.getElementById("startBtn");
+var optionsBtn = document.getElementById("optionsBtn");
+var volumeSlider = document.getElementById("volumeSlider");
+volumeSlider.style.display = 'none'; //KAN DIT IN HTML?
+var optionsBackBtn = document.getElementById("optionsBackBtn");
+optionsBackBtn.style.display = 'none'; //KAN DIT IN HTML?
+
+var cDickLets = document.getElementById("canvas_dicklets").getContext('2d');
+
 var gPlanet = document.getElementById("canvas_planet").getContext('2d');
 var planet = new Planet(0, 0);
 
-//var explosion = null;
-var explosionCount = 0;
-
 var explosions = [];
+var explosionImg = new Image();
+explosionImg.src = 'https://jjwallace.github.io/assets/examples/images/boom.png';
+
+var volume = 0.2;
+
+var gameState = gameStateEnum.MENU;
+
+
+var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
+
 
 function Planet(x, y) {
     this.x = x;
@@ -19,6 +38,10 @@ function Planet(x, y) {
     this.width = width;
     this.height = height;
     this.image = new Image();
+
+    // this.audio = new Audio('audio/soundsample.mp3');
+    // this.audio.play();
+
     this.render = function() {
         this.image.src = "images/planet.png";
         gPlanet.drawImage(this.image, this.x, this.y, this.width, this.height);
@@ -33,15 +56,12 @@ function Explosion(x, y) {
     this.scale = 1;
     this.scaledWidth = this.scale * this.width;
     this.scaledHeight = this.scale * this.height;
-    this.i = 0;
+    this.sheetCol = 0;
     this.sheetRow = 0;
     this.sheetLengthX = 8;
     this.sheetLengthY = 8;
-    this.image = new Image();
-    this.image.src = 'https://jjwallace.github.io/assets/examples/images/boom.png';
-
     this.canvas = document.createElement('canvas');
-    this.canvas.id = "canvas_explosion" + explosionCount;
+    this.canvas.id = "canvas_explosion" + explosions.length;
     this.canvas.width  = 1000;
     this.canvas.height = 1000;
     this.canvas.style.zzIndex   = "8";
@@ -49,9 +69,11 @@ function Explosion(x, y) {
     this.canvas.style.border   = "1px solid black";
     document.getElementsByTagName("body")[0].appendChild(this.canvas);
     this.canvasContext = this.canvas.getContext("2d");
+    this.soundEffect = new Audio('audio/explosion_effect.mp3');
+    this.soundEffect.volume = volume;
 
     this.render = function(frameX, frameY, canvasX, canvasY) {
-        this.canvasContext.drawImage(this.image,
+        this.canvasContext.drawImage(explosionImg,
                         frameX * this.width, frameY * this.height,
                         this.width,
                         this.height,
@@ -64,27 +86,37 @@ function Explosion(x, y) {
     this.tick = function() {
         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.width); //TODO only where explosion is
         if (this.sheetRow <= this.sheetLengthY) {
-            this.render(this.i, this.sheetRow, this.x-(this.width/2), this.y-(this.height/2));
-            this.i++;
-            if (this.i >= this.sheetLengthX) {
-                this.i = 0;
+            this.render(this.sheetCol, this.sheetRow, this.x-(this.width/2), this.y-(this.height/2));
+            this.sheetCol++;
+            if (this.sheetCol >= this.sheetLengthX) {
+                this.sheetCol = 0;
                 this.sheetRow++;
             }
 
             if (this.sheetRow > this.sheetLengthY) {
-                //explosion = null; //TODO makes it stop refreshing the other explosions
-
-                //TODO slice the array to remove it
-                 var index = explosions.indexOf(this);
-                 explosions.splice(index, 1);
-                 explosionCount--;
-
+                explosions.splice(explosions.indexOf(this), 1);
                 document.getElementsByTagName("body")[0].removeChild(this.canvas);
-
             }
         }
     }
 }
+
+function DickLit(x, y) {
+    this.x = x;
+    this.y = y;
+    this.width = 40;
+    this.height = 40;
+    this.image = new Image();
+
+    // this.audio = new Audio('audio/soundsample.mp3');
+    // this.audio.play();
+
+    this.render = function() {
+        this.image.src = "images/chicken.png";
+        cDickLets.drawImage(this.image, this.x, this.y, this.width, this.height);
+    };
+}
+
 
 class nBodyProblem {
     constructor(params) {
@@ -133,8 +165,8 @@ class nBodyProblem {
                 if (i !== j) {
                     const massJ = this.masses[j];
 
-                    if (massJ.radius == 4) {
-                        //some collision
+                    if (massJ.radius == 4) { //TODO improve this if statement to check if its not earth
+                        //some pixel collision
                         var indexX = Math.floor((massJ.x * scale) + (width / 2));
                         var indexY = Math.floor((massJ.y * scale) + (height / 2));
 
@@ -143,11 +175,9 @@ class nBodyProblem {
                             //console.log(pixelData[zx + 3].toString());
 
                             if (pixelData[zx + 3].toString() != 0) {
-
-                                explosions.push(new Explosion(indexX, indexY));
-
-                                //explosion = new Explosion(indexX, indexY); //TODO array van maken
-                                explosionCount++;
+                                var explosion = new Explosion(indexX, indexY);
+                                explosions.push(explosion);
+                                explosion.soundEffect.play();
                                 this.masses.splice(j, 1);
                                 break;
                             }
@@ -273,16 +303,18 @@ let mousePressX = 0;
 let mousePressY = 0;
 let currentMouseX = 0;
 let currentMouseY = 0;
-let dragging = false;
+let mouseDown = false;
 
 const massesList = document.querySelector("#masses-list");
 
 addEventListener(
     "mousedown",
     e => {
-        mousePressX = e.clientX;
-        mousePressY = e.clientY;
-        dragging = true;
+        if (gameState == gameStateEnum.PLAY) {
+            mousePressX = e.clientX;
+            mousePressY = e.clientY;
+            mouseDown = true;
+        }
     },
     false
 );
@@ -290,8 +322,10 @@ addEventListener(
 addEventListener(
     "mousemove",
     e => {
-        currentMouseX = e.clientX;
-        currentMouseY = e.clientY;
+        if (gameState == gameStateEnum.PLAY) {
+            currentMouseX = e.clientX;
+            currentMouseY = e.clientY;
+        }
     },
     false
 );
@@ -299,47 +333,51 @@ addEventListener(
 addEventListener(
     "mouseup",
     e => {
-        const x = (mousePressX - width / 2) / scale;
+        if (gameState == gameStateEnum.PLAY) {
+            const x = (mousePressX - width / 2) / scale;
 
-        const y = (mousePressY - height / 2) / scale;
-        const z = 0;
-        const vx = (e.clientX - mousePressX) / 35;
-        const vy = (e.clientY - mousePressY) / 35;
-        const vz = 0;
-        const radius = 4;
+            const y = (mousePressY - height / 2) / scale;
+            const z = 0;
+            const vx = (e.clientX - mousePressX) / 35;
+            const vy = (e.clientY - mousePressY) / 35;
+            const vz = 0;
+            const radius = 4;
 
-        innerSolarSystem.masses.push({
-            m: parseFloat(massesList.value),
-            x,
-            y,
-            z,
-            vx,
-            vy,
-            vz,
-            radius,
-            manifestation: new Manifestation(ctx, trailLength, radius)
-        });
+            innerSolarSystem.masses.push({
+                m: parseFloat(massesList.value),
+                x,
+                y,
+                z,
+                vx,
+                vy,
+                vz,
+                radius,
+                manifestation: new Manifestation(ctx, trailLength, radius)
+            });
 
-        dragging = false;
+            mouseDown = false;
+        }
     },
     false
 );
 
-
-function rotatePlanet() {
+const animate = () => {
+    gPlanet.clearRect(0, 0, width, height);
+    planet.render();
     gPlanet.translate(planet.width/2, planet.height/2);
     gPlanet.rotate(- (Math.PI / 180) /10);
     gPlanet.translate(-planet.width/2, -planet.height/2);
-}
 
-function render() {
-    gPlanet.clearRect(0, 0, width, height);
-    planet.render();
-}
+    cDickLets.clearRect(0, 0, width, height);
+    dickLit.render();
 
-const animate = () => {
-    render();
-    rotatePlanet();
+    // rotate enemies
+    cDickLets.translate(500, 500); //half canvas
+    cDickLets.rotate(- (Math.PI / 180) /10);
+    cDickLets.translate(-500, -500); //half canvas
+
+
+
 
     for (i in explosions) {
         explosions[i].tick();
@@ -352,21 +390,23 @@ const animate = () => {
 
     ctx.clearRect(0, 0, width, height);
 
-    const massesLen = innerSolarSystem.masses.length;
+    for (let i = 0; i < innerSolarSystem.masses.length; i++) {
+        //skip "earth"
+        if (i <= 0) continue;
 
-    for (let i = 0; i < massesLen; i++) {
         const massI = innerSolarSystem.masses[i];
         const x = width / 2 + massI.x * scale;
         const y = height / 2 + massI.y * scale;
 
         massI.manifestation.draw(x, y);
 
+        //border bounce
         // if (x < radius || x > width - radius) massI.vx = -massI.vx;
         //
         // if (y < radius || y > height - radius) massI.vy = -massI.vy;
     }
 
-    if (dragging) {
+    if (mouseDown) {
         ctx.beginPath();
         ctx.moveTo(mousePressX, mousePressY);
         ctx.lineTo(currentMouseX, currentMouseY);
@@ -377,4 +417,35 @@ const animate = () => {
     requestAnimationFrame(animate);
 };
 
-animate();
+function start() {
+    volume = volumeSlider.value / 100;
+
+    startBtn.style.display = 'none';
+    optionsBtn.style.display = 'none';
+
+    gameState = gameStateEnum.PLAY;
+    animate();
+}
+
+/////////////////////OPTIONS////////////////////////////
+
+function showOptions() {
+    startBtn.style.display = 'none';
+    optionsBtn.style.display = 'none';
+
+    optionsBackBtn.style.display = 'inline';
+    volumeSlider.style.display = 'inline';
+}
+
+function backOptions() {
+    volumeSlider.style.display = 'none';
+    optionsBackBtn.style.display = 'none';
+
+    startBtn.style.display = 'inline';
+    optionsBtn.style.display = 'inline';
+}
+
+//TODO username opgeven en coole avatar plaatsen met naam
+//TODO sound effects en music audio volume los trekken van elkaar
+//TODO difficulty setting
+//TODO build a pause function

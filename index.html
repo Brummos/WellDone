@@ -9,6 +9,38 @@
             top: 0;
             left: 0;
         }
+        #startBtn {
+            position: absolute;
+            top: 400px;
+            left: 250px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+        }
+        #optionsBtn {
+            position: absolute;
+            top: 460px;
+            left: 250px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+        }
+        #optionsBackBtn {
+            position: absolute;
+            top: 460px;
+            left: 250px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+        }
+        #volumeSlider {
+            position: absolute;
+            top: 520px;
+            left: 250px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -20,6 +52,13 @@
 <!--<canvas id="canvas_arrow" width="400" height="400" style="border: 1px solid black"></canvas>-->
 <canvas id="canvas_explosions" width="1000" height="1000" style="border: 1px solid black"></canvas>
 <canvas id="canvas_enemies" width="1000" height="1000" style="border: 1px solid black"></canvas>
+<canvas id="canvas_dicklets" width="1000" height="1000" style="border: 1px solid black"></canvas>
+
+<button type="button" id="startBtn" onclick="start()">START</button>
+<button type="button" id="optionsBtn" onclick="showOptions()">OPTIONS</button>
+<button type="button" id="optionsBackBtn" onclick="backOptions()">BACK</button>
+
+<input id="volumeSlider" type="range" min="0" max="100" value="100" step="1"></input>
 
 <section id="controls-wrapper">
     <!--<label>Mass of Added Planet</label>-->
