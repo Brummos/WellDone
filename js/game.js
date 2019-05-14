@@ -15,6 +15,8 @@ volumeSlider.style.display = 'none'; //KAN DIT IN HTML?
 var optionsBackBtn = document.getElementById("optionsBackBtn");
 optionsBackBtn.style.display = 'none'; //KAN DIT IN HTML?
 
+var cCircles = document.getElementById("canvas_circles").getContext('2d');
+
 var cDickLets = document.getElementById("canvas_dicklets").getContext('2d');
 
 var gPlanet = document.getElementById("canvas_planet").getContext('2d');
@@ -30,7 +32,7 @@ var gameState = gameStateEnum.MENU;
 
 
 var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
-
+var dickLitList = [];
 
 function Planet(x, y) {
     this.x = x;
@@ -174,7 +176,7 @@ class nBodyProblem {
                         for (var zx = 0, n = pixelData.length; zx < n; zx += 4) {
                             //console.log(pixelData[zx + 3].toString());
 
-                            if (pixelData[zx + 3].toString() != 0) {
+                            if (pixelData[zx + 3].toString() != 0) { //.toString() ????
                                 var explosion = new Explosion(indexX, indexY);
                                 explosions.push(explosion);
                                 explosion.soundEffect.play();
@@ -368,6 +370,10 @@ const animate = () => {
     gPlanet.rotate(- (Math.PI / 180) /10);
     gPlanet.translate(-planet.width/2, -planet.height/2);
 
+
+
+
+    ////TEST STUFF
     cDickLets.clearRect(0, 0, width, height);
     dickLit.render();
 
@@ -376,8 +382,80 @@ const animate = () => {
     cDickLets.rotate(- (Math.PI / 180) /10);
     cDickLets.translate(-500, -500); //half canvas
 
+    // test circles
+    // inner circle
+    cCircles.beginPath();
+    cCircles.arc(500, 500, 330, 0, 2 * Math.PI);
+    cCircles.stroke();
+    // outer circle
+    cCircles.beginPath();
+    cCircles.arc(500, 500, 408, 0, 2 * Math.PI);
+    cCircles.stroke();
 
 
+
+    // test searching good pixels
+    // var min=0;
+    // var max=999;
+    // var randomX = Math.random() * (+max - +min) + +min;
+    // var randomY = Math.random() * (+max - +min) + +min;
+    // var pixelData = gPlanet.getImageData(randomX, randomY, 1, 1).data;//event.offsetX, event.offsetY, 1, 1).data;
+    // for (var zx = 0, n = pixelData.length; zx < n; zx += 4) {
+    //     console.log(pixelData[zx + 3].toString());
+    // }
+
+   // get random position between 2 radius
+    var minR=330;
+    var maxR=408;
+    var radiusRandom = Math.random() * (+maxR - +minR) + +minR;
+    var radius = 60;
+    var minA=1;
+    var maxA=360;
+    var angleRandom = Math.random() * (+maxA - +minA) + +minA;
+    var angle  = 140;
+    var x = radiusRandom * Math.sin(Math.PI * 2 * angleRandom / 360); //angleRandom);//
+    var y = radiusRandom * Math.cos(Math.PI * 2 * angleRandom / 360); //angleRandom);//
+    // console.log('Points coors are  x='+
+    //     Math.round(x * 100) / 100 +', y=' +
+    //     Math.round(y * 100) / 100)
+
+    var xx = 0;
+    if ( x < 0) {
+        // x = --x;
+        xx = 500 - Math.abs(x);
+    } else {
+        xx = 500 + x;
+    }
+
+    var yy = 0;
+    if ( y < 0) {
+       // y = --y;
+        yy = 500 - Math.abs(y);
+    } else {
+        yy = 500 + y;
+    }
+
+    // console.log(xx)
+    // console.log(yy)
+
+    //TODO CHECK y1 y2
+    //           x1 x2
+
+    var pixelData = gPlanet.getImageData(xx-20, yy-20, 1, 1).data;//event.offsetX, event.offsetY, 1, 1).data;
+    for (var zx = 0, n = pixelData.length; zx < n; zx += 4) {
+        //console.log(pixelData[zx + 3].toString());
+        if (pixelData[zx + 3].toString() != 0) {
+            dickLitList.push(new DickLit(xx - 20, yy - 20)); // 20 is half size of chicken
+
+        }
+    }
+
+    for (let i in dickLitList) {
+        dickLitList[i].render();
+    }
+
+
+    /////normal stuff
 
     for (i in explosions) {
         explosions[i].tick();
