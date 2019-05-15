@@ -3,89 +3,127 @@ gameStateEnum = {
     PLAY : 'PLAY',
 }
 
-const canvas = document.querySelector("#canvas_enemies");
-const ctx = canvas.getContext("2d");
-const width = (canvas.width);
-const height = (canvas.height);
-
-var startBtn = document.getElementById("startBtn");
-var optionsBtn = document.getElementById("optionsBtn");
-var volumeSlider = document.getElementById("volumeSlider");
-volumeSlider.style.display = 'none'; //KAN DIT IN HTML?
-var optionsBackBtn = document.getElementById("optionsBackBtn");
-optionsBackBtn.style.display = 'none'; //KAN DIT IN HTML?
-
-var cCircles = document.getElementById("canvas_circles").getContext('2d');
-
-var cDickLets = document.getElementById("canvas_dicklets").getContext('2d');
-
-var gPlanet = document.getElementById("canvas_planet").getContext('2d');
-var planet = new Planet(0, 0);
-
-var explosions = [];
-var explosionImg = new Image();
-explosionImg.src = 'https://jjwallace.github.io/assets/examples/images/boom.png';
-
-var volume = 0.2;
-
-var gameState = gameStateEnum.MENU;
-
-
-var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
-var dickLitList = [];
-
-function Planet(x, y) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.image = new Image();
-
-    // this.audio = new Audio('audio/soundsample.mp3');
-    // this.audio.play();
-
-    this.render = function() {
+class Planet {
+    constructor(x, y)
+    {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.image = new Image();
         this.image.src = "images/planet.png";
+    }
+
+    render() {
+        gPlanet.clearRect(0, 0, width, height);
         gPlanet.drawImage(this.image, this.x, this.y, this.width, this.height);
+        gPlanet.translate(planet.width/2, planet.height/2);
+        gPlanet.rotate(- (Math.PI / 180) /10);
+        gPlanet.translate(-planet.width/2, -planet.height/2);
+
     };
 }
 
-function Explosion(x, y) {
-    this.x = x;
-    this.y = y;
-    this.width = 256;
-    this.height = 256;
-    this.scale = 1;
-    this.scaledWidth = this.scale * this.width;
-    this.scaledHeight = this.scale * this.height;
-    this.sheetCol = 0;
-    this.sheetRow = 0;
-    this.sheetLengthX = 8;
-    this.sheetLengthY = 8;
-    this.canvas = document.createElement('canvas');
-    this.canvas.id = "canvas_explosion" + explosions.length;
-    this.canvas.width  = 1000;
-    this.canvas.height = 1000;
-    this.canvas.style.zzIndex   = "8";
-//    canvas.style.position = "absolute";
-    this.canvas.style.border   = "1px solid black";
-    document.getElementsByTagName("body")[0].appendChild(this.canvas);
-    this.canvasContext = this.canvas.getContext("2d");
-    this.soundEffect = new Audio('audio/explosion_effect.mp3');
-    this.soundEffect.volume = volume;
+class Rocket {
+    constructor(x, y)
+    {
+        this.x = x;
+        this.y = y;
+        this.width = 40;
+        this.height = 80;
+        this.image = new Image();
+        this.image.src = "images/rocket.png";
+        this.velX = 0;
+        this.velY = 0;
+        this.speed = 2;
+        this.landed = false;
+        // this.audio = new Audio('audio/soundsample.mp3');
+        // this.audio.play();
+        //this.dd = false;
+    }
 
-    this.render = function(frameX, frameY, canvasX, canvasY) {
-        this.canvasContext.drawImage(explosionImg,
-                        frameX * this.width, frameY * this.height,
-                        this.width,
-                        this.height,
-                        canvasX,
-                        canvasY,
-                        this.scaledWidth,
-                        this.scaledHeight);
+    //TODO give object own canvas (dynamic)
+
+    render() {
+        if (!this.landed) {
+            this.collision();
+            this.move();
+        }
+
+        gRocket.clearRect(0, 0, width, height);
+        gRocket.drawImage(this.image, this.x, this.y, this.width, this.height);
+
+        if (this.landed) {
+            gRocket.translate(500, 500); //half canvas
+            gRocket.rotate(- (Math.PI / 180) /10);
+            gRocket.translate(-500, -500); //half canvas
+        }
     };
 
-    this.tick = function() {
+    move() {
+        var tx = 500 - this.x, //500 is center
+            ty = 500 - this.y,
+            dist = Math.sqrt(tx * tx + ty * ty);
+
+        if (dist >= this.speed) {
+            this.velX = (tx / dist) * this.speed;
+            this.velY = (ty / dist) * this.speed;
+            this.x += this.velX;
+            this.y += this.velY;
+        }
+    };
+
+    collision() {
+        var pixelData = gPlanet.getImageData(this.x, this.y, 1, 1).data;
+        for (var zx = 0, n = pixelData.length; zx < n; zx += 4) {
+            //console.log(pixelData[zx + 3].toString());
+
+            if (pixelData[zx + 3] != 0) {
+                this.landed = true;
+                break;
+            }
+        }
+    }
+}
+
+class Explosion {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.width = 256;
+        this.height = 256;
+        this.scale = 1;
+        this.scaledWidth = this.scale * this.width;
+        this.scaledHeight = this.scale * this.height;
+        this.sheetCol = 0;
+        this.sheetRow = 0;
+        this.sheetLengthX = 8;
+        this.sheetLengthY = 8;
+        this.canvas = document.createElement('canvas');
+        this.canvas.id = "canvas_explosion" + explosions.length;
+        this.canvas.width = 1000;
+        this.canvas.height = 1000;
+        this.canvas.style.zzIndex = "8";
+//    canvas.style.position = "absolute";
+        this.canvas.style.border = "1px solid black";
+        document.getElementsByTagName("body")[0].appendChild(this.canvas);
+        this.canvasContext = this.canvas.getContext("2d");
+        this.soundEffect = new Audio('audio/explosion_effect.mp3');
+        this.soundEffect.volume = volume;
+    }
+
+    render(frameX, frameY, canvasX, canvasY) {
+        this.canvasContext.drawImage(explosionImg,
+            frameX * this.width, frameY * this.height,
+            this.width,
+            this.height,
+            canvasX,
+            canvasY,
+            this.scaledWidth,
+            this.scaledHeight);
+    };
+
+    tick() {
         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.width); //TODO only where explosion is
         if (this.sheetRow <= this.sheetLengthY) {
             this.render(this.sheetCol, this.sheetRow, this.x-(this.width/2), this.y-(this.height/2));
@@ -102,23 +140,6 @@ function Explosion(x, y) {
         }
     }
 }
-
-function DickLit(x, y) {
-    this.x = x;
-    this.y = y;
-    this.width = 40;
-    this.height = 40;
-    this.image = new Image();
-
-    // this.audio = new Audio('audio/soundsample.mp3');
-    // this.audio.play();
-
-    this.render = function() {
-        this.image.src = "images/chicken.png";
-        cDickLets.drawImage(this.image, this.x, this.y, this.width, this.height);
-    };
-}
-
 
 class nBodyProblem {
     constructor(params) {
@@ -207,6 +228,138 @@ class nBodyProblem {
 
         return this;
     }
+}
+
+var gameState = gameStateEnum.MENU;
+var volume = 0.2;
+var explosionImg = new Image();
+explosionImg.src = 'images/boom.png';
+var explosions = [];
+var dickLitList = [];
+
+var cCircles = document.getElementById("canvas_circles").getContext('2d');
+var cDickLets = document.getElementById("canvas_dicklets").getContext('2d');
+var gPlanet = document.getElementById("canvas_planet").getContext('2d');
+var gRocket = document.getElementById("canvas_rocket").getContext('2d');
+
+const canvas = document.querySelector("#canvas_enemies");
+const ctx = canvas.getContext("2d");
+const width = (canvas.width);
+const height = (canvas.height);
+
+var startBtn = document.getElementById("startBtn");
+var optionsBtn = document.getElementById("optionsBtn");
+var volumeSlider = document.getElementById("volumeSlider");
+volumeSlider.style.display = 'none'; //KAN DIT IN HTML?
+var optionsBackBtn = document.getElementById("optionsBackBtn");
+optionsBackBtn.style.display = 'none'; //KAN DIT IN HTML?
+
+//NEEDS TO BE CLASS
+function DickLit(x, y) {
+    this.x = x;
+    this.y = y;
+    this.width = 40;
+    this.height = 40;
+    this.image = new Image();
+
+    // this.audio = new Audio('audio/soundsample.mp3');
+    // this.audio.play();
+
+    this.render = function() {
+        this.image.src = "images/chicken.png";
+        cDickLets.drawImage(this.image, this.x, this.y, this.width, this.height);
+    };
+}
+
+var planet = new Planet(0, 0);
+var rocket = new Rocket(0, 0);
+var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
+
+
+function populateEnemies() {
+    ////TEST STUFF
+    // gRocket.clearRect(0, 0, width, height);
+    rocket.render();
+
+    cDickLets.clearRect(0, 0, width, height);
+    dickLit.render();
+
+    // rotate enemies
+    cDickLets.translate(500, 500); //half canvas
+    cDickLets.rotate(- (Math.PI / 180) /10);
+    cDickLets.translate(-500, -500); //half canvas
+
+    // test circles
+    // inner circle
+    cCircles.beginPath();
+    cCircles.arc(500, 500, 330, 0, 2 * Math.PI);
+    cCircles.stroke();
+    // outer circle
+    cCircles.beginPath();
+    cCircles.arc(500, 500, 408, 0, 2 * Math.PI);
+    cCircles.stroke();
+
+
+
+    // test searching good pixels
+    // var min=0;
+    // var max=999;
+    // var randomX = Math.random() * (+max - +min) + +min;
+    // var randomY = Math.random() * (+max - +min) + +min;
+    // var pixelData = gPlanet.getImageData(randomX, randomY, 1, 1).data;//event.offsetX, event.offsetY, 1, 1).data;
+    // for (var zx = 0, n = pixelData.length; zx < n; zx += 4) {
+    //     console.log(pixelData[zx + 3].toString());
+    // }
+
+    // // get random position between 2 radius
+    //  var minR=330;
+    //  var maxR=408;
+    //  var radiusRandom = Math.random() * (+maxR - +minR) + +minR;
+    //  var radius = 60;
+    //  var minA=1;
+    //  var maxA=360;
+    //  var angleRandom = Math.random() * (+maxA - +minA) + +minA;
+    //  var angle  = 140;
+    //  var x = radiusRandom * Math.sin(Math.PI * 2 * angleRandom / 360); //angleRandom);//
+    //  var y = radiusRandom * Math.cos(Math.PI * 2 * angleRandom / 360); //angleRandom);//
+    //  // console.log('Points coors are  x='+
+    //  //     Math.round(x * 100) / 100 +', y=' +
+    //  //     Math.round(y * 100) / 100)
+    //
+    //  var xx = 0;
+    //  if ( x < 0) {
+    //      // x = --x;
+    //      xx = 500 - Math.abs(x);
+    //  } else {
+    //      xx = 500 + x;
+    //  }
+    //
+    //  var yy = 0;
+    //  if ( y < 0) {
+    //     // y = --y;
+    //      yy = 500 - Math.abs(y);
+    //  } else {
+    //      yy = 500 + y;
+    //  }
+    //
+    //  // console.log(xx)
+    //  // console.log(yy)
+    //
+    //  //TODO CHECK y1 y2
+    //  //           x1 x2
+    //
+    //  var pixelData = gPlanet.getImageData(xx-20, yy-20, 1, 1).data;//event.offsetX, event.offsetY, 1, 1).data;
+    //  for (var zx = 0, n = pixelData.length; zx < n; zx += 4) {
+    //      //console.log(pixelData[zx + 3].toString());
+    //      if (pixelData[zx + 3].toString() != 0) {
+    //          dickLitList.push(new DickLit(xx - 20, yy - 20)); // 20 is half size of chicken
+    //
+    //      }
+    //  }
+    //
+    //  for (let i in dickLitList) {
+    //      dickLitList[i].render();
+    //  }
 }
 
 const g = 20;//39.5; //gravity
@@ -364,98 +517,8 @@ addEventListener(
 );
 
 const animate = () => {
-    gPlanet.clearRect(0, 0, width, height);
     planet.render();
-    gPlanet.translate(planet.width/2, planet.height/2);
-    gPlanet.rotate(- (Math.PI / 180) /10);
-    gPlanet.translate(-planet.width/2, -planet.height/2);
-
-
-
-
-    ////TEST STUFF
-    cDickLets.clearRect(0, 0, width, height);
-    dickLit.render();
-
-    // rotate enemies
-    cDickLets.translate(500, 500); //half canvas
-    cDickLets.rotate(- (Math.PI / 180) /10);
-    cDickLets.translate(-500, -500); //half canvas
-
-    // test circles
-    // inner circle
-    cCircles.beginPath();
-    cCircles.arc(500, 500, 330, 0, 2 * Math.PI);
-    cCircles.stroke();
-    // outer circle
-    cCircles.beginPath();
-    cCircles.arc(500, 500, 408, 0, 2 * Math.PI);
-    cCircles.stroke();
-
-
-
-    // test searching good pixels
-    // var min=0;
-    // var max=999;
-    // var randomX = Math.random() * (+max - +min) + +min;
-    // var randomY = Math.random() * (+max - +min) + +min;
-    // var pixelData = gPlanet.getImageData(randomX, randomY, 1, 1).data;//event.offsetX, event.offsetY, 1, 1).data;
-    // for (var zx = 0, n = pixelData.length; zx < n; zx += 4) {
-    //     console.log(pixelData[zx + 3].toString());
-    // }
-
-   // get random position between 2 radius
-    var minR=330;
-    var maxR=408;
-    var radiusRandom = Math.random() * (+maxR - +minR) + +minR;
-    var radius = 60;
-    var minA=1;
-    var maxA=360;
-    var angleRandom = Math.random() * (+maxA - +minA) + +minA;
-    var angle  = 140;
-    var x = radiusRandom * Math.sin(Math.PI * 2 * angleRandom / 360); //angleRandom);//
-    var y = radiusRandom * Math.cos(Math.PI * 2 * angleRandom / 360); //angleRandom);//
-    // console.log('Points coors are  x='+
-    //     Math.round(x * 100) / 100 +', y=' +
-    //     Math.round(y * 100) / 100)
-
-    var xx = 0;
-    if ( x < 0) {
-        // x = --x;
-        xx = 500 - Math.abs(x);
-    } else {
-        xx = 500 + x;
-    }
-
-    var yy = 0;
-    if ( y < 0) {
-       // y = --y;
-        yy = 500 - Math.abs(y);
-    } else {
-        yy = 500 + y;
-    }
-
-    // console.log(xx)
-    // console.log(yy)
-
-    //TODO CHECK y1 y2
-    //           x1 x2
-
-    var pixelData = gPlanet.getImageData(xx-20, yy-20, 1, 1).data;//event.offsetX, event.offsetY, 1, 1).data;
-    for (var zx = 0, n = pixelData.length; zx < n; zx += 4) {
-        //console.log(pixelData[zx + 3].toString());
-        if (pixelData[zx + 3].toString() != 0) {
-            dickLitList.push(new DickLit(xx - 20, yy - 20)); // 20 is half size of chicken
-
-        }
-    }
-
-    for (let i in dickLitList) {
-        dickLitList[i].render();
-    }
-
-
-    /////normal stuff
+    populateEnemies();
 
     for (i in explosions) {
         explosions[i].tick();
