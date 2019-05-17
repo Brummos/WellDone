@@ -4,29 +4,36 @@ gameStateEnum = {
 }
 
 class Planet {
-    constructor(x, y)
-    {
-        this.x = x;
-        this.y = y;
+    constructor(x, y, width, height, canvas) {
+        this.cx = x;
+        this.cy = y;
         this.width = width;
         this.height = height;
         this.image = new Image();
         this.image.src = "images/planet.png";
+        this.m = 2;
+        this.x = -1.50324727873647e-6;
+        this.y = -3.93762725944737e-6;
+        this.z = -4.86567877183925e-8;
+        this.vx = 3.1669325898331e-5;
+        this.vy = -6.85489559263319e-6;
+        this.vz = -7.90076642683254e-7;
+        this.radius = 300;
+        this.canvas = canvas;
+        this.canvasContext = this.canvas.getContext('2d');
     }
 
     render() {
-        gPlanet.clearRect(0, 0, width, height);
-        gPlanet.drawImage(this.image, this.x, this.y, this.width, this.height);
-        gPlanet.translate(planet.width/2, planet.height/2);
-        gPlanet.rotate(- (Math.PI / 180) /10);
-        gPlanet.translate(-planet.width/2, -planet.height/2);
-
+        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.canvasContext.drawImage(this.image, this.cx, this.cy, this.width, this.height);
+        this.canvasContext.translate(this.canvas.width/2, this.canvas.height/2);
+        this.canvasContext.rotate(- (Math.PI / 180) /10);
+        this.canvasContext.translate(-this.canvas.width/2, -this.canvas.height/2);
     };
 }
 
 class Rocket {
-    constructor(x, y)
-    {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
         this.width = 40;
@@ -50,8 +57,9 @@ class Rocket {
             this.move();
         }
 
-        gRocket.clearRect(0, 0, width, height);
-        gRocket.drawImage(this.image, this.x, this.y, this.width, this.height);
+
+          gRocket.clearRect(0, 0, width, height);
+           gRocket.drawImage(this.image, this.x, this.y, this.width, this.height);
 
         if (this.landed) {
             gRocket.translate(500, 500); //half canvas
@@ -87,12 +95,12 @@ class Rocket {
 }
 
 class Explosion {
-    constructor(x, y) {
+    constructor(x, y, width, height, scale, canvasWidth, canvasHeight) {
         this.x = x;
         this.y = y;
-        this.width = 256;
-        this.height = 256;
-        this.scale = 1;
+        this.width = width;
+        this.height = height;
+        this.scale = scale;
         this.scaledWidth = this.scale * this.width;
         this.scaledHeight = this.scale * this.height;
         this.sheetCol = 0;
@@ -101,8 +109,8 @@ class Explosion {
         this.sheetLengthY = 8;
         this.canvas = document.createElement('canvas');
         this.canvas.id = "canvas_explosion" + explosions.length;
-        this.canvas.width = 1000;
-        this.canvas.height = 1000;
+        this.canvas.width = canvasWidth;
+        this.canvas.height = canvasHeight;
         this.canvas.style.zzIndex = "8";
 //    canvas.style.position = "absolute";
         this.canvas.style.border = "1px solid black";
@@ -140,6 +148,24 @@ class Explosion {
         }
     }
 }
+
+function Star(x, y) {
+    this.x = x;
+    this.y = y;
+    this.size = Math.random() * 3;
+    this.render = function() {
+        cStars.fillStyle = "white";
+        cStars.fillRect(this.x, this.y, this.size, this.size);
+    }
+    this.tick = function() {
+        // if (this.y > gBackgroundHeight + 4) {
+        //     stars.splice(stars.indexOf(this), 1);
+        //     return;
+        // }
+        // this.y++;
+
+    }
+} //needs to be a class
 
 class nBodyProblem {
     constructor(params) {
@@ -198,7 +224,7 @@ class nBodyProblem {
                             //console.log(pixelData[zx + 3].toString());
 
                             if (pixelData[zx + 3].toString() != 0) { //.toString() ????
-                                var explosion = new Explosion(indexX, indexY);
+                                var explosion = new Explosion(indexX, indexY, 256, 256, 1, 2400, 1200);
                                 explosions.push(explosion);
                                 explosion.soundEffect.play();
                                 this.masses.splice(j, 1);
@@ -234,13 +260,19 @@ var gameState = gameStateEnum.MENU;
 var volume = 0.2;
 var explosionImg = new Image();
 explosionImg.src = 'images/boom.png';
+var bgimg = new Image();
+bgimg.src = 'images/bg.jpeg';
 var explosions = [];
 var dickLitList = [];
+var stars = [];
 
 var cCircles = document.getElementById("canvas_circles").getContext('2d');
 var cDickLets = document.getElementById("canvas_dicklets").getContext('2d');
+var cPlanetCanvas = document.getElementById("canvas_planet");
 var gPlanet = document.getElementById("canvas_planet").getContext('2d');
 var gRocket = document.getElementById("canvas_rocket").getContext('2d');
+var cBackground = document.getElementById("canvas_background").getContext('2d');
+var cStars = document.getElementById("canvas_stars").getContext('2d');
 
 const canvas = document.querySelector("#canvas_enemies");
 const ctx = canvas.getContext("2d");
@@ -271,10 +303,27 @@ function DickLit(x, y) {
     };
 }
 
-var planet = new Planet(0, 0);
-var rocket = new Rocket(0, 0);
+var planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/2)-(1000/2), 1000, 1000, cPlanetCanvas);
+var rocket = new Rocket(800, -30);
 var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
 
+const g = 20;//39.5; //gravity
+const dt = 0.008; //0.005 years is equal to 1.825 days //speed
+const softeningConstant = 0.15;
+const scale = 300;
+const trailLength = 35;
+
+let mousePressX = 0;
+let mousePressY = 0;
+let currentMouseX = 0;
+let currentMouseY = 0;
+let mouseDown = false;
+
+function initStars(amount) {
+    for (i = 0; i < amount; i++) {
+        stars.push(new Star(Math.random() * 2400, Math.random() * 1200));
+    }
+}
 
 function populateEnemies() {
     ////TEST STUFF
@@ -362,21 +411,27 @@ function populateEnemies() {
     //  }
 }
 
-const g = 20;//39.5; //gravity
-const dt = 0.008; //0.005 years is equal to 1.825 days //speed
-const softeningConstant = 0.15;
-
 const masses = [
     {
+        // name: "",
+        // m: 2,
+        // x: -1.50324727873647e-6,
+        // y: -3.93762725944737e-6,
+        // z: -4.86567877183925e-8,
+        // vx: 3.1669325898331e-5,
+        // vy: -6.85489559263319e-6,
+        // vz: -7.90076642683254e-7,
+        // radius: 300
+
         name: "",
-        m: 2,
-        x: -1.50324727873647e-6,
-        y: -3.93762725944737e-6,
-        z: -4.86567877183925e-8,
-        vx: 3.1669325898331e-5,
-        vy: -6.85489559263319e-6,
-        vz: -7.90076642683254e-7,
-        radius: 300
+        m: planet.m,
+        x: planet.x,
+        y: planet.y,
+        z: planet.z,
+        vx: planet.vx,
+        vy: planet.vy,
+        vz: planet.vz,
+        radius: planet.radius
     }
 ];
 
@@ -438,9 +493,6 @@ class Manifestation {
     }
 }
 
-const scale = 300;
-const trailLength = 35;
-
 const populateManifestations = masses => {
     masses.forEach(
         mass =>
@@ -453,12 +505,6 @@ const populateManifestations = masses => {
 };
 
 populateManifestations(innerSolarSystem.masses);
-
-let mousePressX = 0;
-let mousePressY = 0;
-let currentMouseX = 0;
-let currentMouseY = 0;
-let mouseDown = false;
 
 const massesList = document.querySelector("#masses-list");
 
@@ -520,6 +566,11 @@ const animate = () => {
     planet.render();
     populateEnemies();
 
+    cBackground.clearRect(0, 0, 2400, 1200);
+    cBackground.drawImage(bgimg, 0, 0, 2400, 1200);
+
+    for (i in stars) stars[i].render();
+
     for (i in explosions) {
         explosions[i].tick();
     }
@@ -565,6 +616,9 @@ function start() {
     optionsBtn.style.display = 'none';
 
     gameState = gameStateEnum.PLAY;
+
+    initStars(600);
+
     animate();
 }
 
@@ -590,3 +644,4 @@ function backOptions() {
 //TODO sound effects en music audio volume los trekken van elkaar
 //TODO difficulty setting
 //TODO build a pause function
+//TODO blackholes
