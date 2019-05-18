@@ -1,7 +1,36 @@
 gameStateEnum = {
     MENU : 'MENU',
     PLAY : 'PLAY',
+    PAUSE : 'PAUSE'
 }
+
+var menuImage = new Image();
+menuImage.src = 'images/menu.jpg';
+
+var cCircles = document.getElementById("canvas_circles").getContext('2d');
+var cDickLets = document.getElementById("canvas_dicklets").getContext('2d');
+var cPlanetCanvas = document.getElementById("canvas_planet");
+var gPlanet = document.getElementById("canvas_planet").getContext('2d');
+var gRocket = document.getElementById("canvas_rocket").getContext('2d');
+var cBackground = document.getElementById("canvas_background").getContext('2d');
+var cStars = document.getElementById("canvas_stars").getContext('2d');
+
+const canvas = document.querySelector("#canvas_enemies");
+const ctx = canvas.getContext("2d");
+const width = (canvas.width);
+const height = (canvas.height);
+
+var startBtn = document.getElementById("startBtn");
+var optionsBtn = document.getElementById("optionsBtn");
+var volumeSlider = document.getElementById("volumeSlider");
+volumeSlider.style.display = 'none'; //KAN DIT IN HTML?
+var musicVolumeSlider = document.getElementById("musicVolumeSlider");
+musicVolumeSlider.style.display = 'none'; //KAN DIT IN HTML?
+var optionsBackBtn = document.getElementById("optionsBackBtn");
+optionsBackBtn.style.display = 'none'; //KAN DIT IN HTML?
+var playMusicBtn = document.getElementById("playMusicBtn");
+
+init();
 
 class Planet {
     constructor(x, y, width, height, canvas) {
@@ -226,7 +255,9 @@ class nBodyProblem {
                             if (pixelData[zx + 3].toString() != 0) { //.toString() ????
                                 var explosion = new Explosion(indexX, indexY, 256, 256, 1, 2400, 1200);
                                 explosions.push(explosion);
-                                explosion.soundEffect.play();
+                                if (playMusicBtn.value == "unmuted") {
+                                    explosion.soundEffect.play();
+                                }
                                 this.masses.splice(j, 1);
                                 break;
                             }
@@ -257,7 +288,8 @@ class nBodyProblem {
 }
 
 var gameState = gameStateEnum.MENU;
-var volume = 0.2;
+var volume = 1;
+var musicVolume = 1;
 var explosionImg = new Image();
 explosionImg.src = 'images/boom.png';
 var bgimg = new Image();
@@ -265,26 +297,9 @@ bgimg.src = 'images/bg.jpeg';
 var explosions = [];
 var dickLitList = [];
 var stars = [];
-
-var cCircles = document.getElementById("canvas_circles").getContext('2d');
-var cDickLets = document.getElementById("canvas_dicklets").getContext('2d');
-var cPlanetCanvas = document.getElementById("canvas_planet");
-var gPlanet = document.getElementById("canvas_planet").getContext('2d');
-var gRocket = document.getElementById("canvas_rocket").getContext('2d');
-var cBackground = document.getElementById("canvas_background").getContext('2d');
-var cStars = document.getElementById("canvas_stars").getContext('2d');
-
-const canvas = document.querySelector("#canvas_enemies");
-const ctx = canvas.getContext("2d");
-const width = (canvas.width);
-const height = (canvas.height);
-
-var startBtn = document.getElementById("startBtn");
-var optionsBtn = document.getElementById("optionsBtn");
-var volumeSlider = document.getElementById("volumeSlider");
-volumeSlider.style.display = 'none'; //KAN DIT IN HTML?
-var optionsBackBtn = document.getElementById("optionsBackBtn");
-optionsBackBtn.style.display = 'none'; //KAN DIT IN HTML?
+var menuMusic = new Audio('audio/menu_audio.mp3');
+menuMusic.volume = musicVolume;
+menuMusic.loop = true;
 
 //NEEDS TO BE CLASS
 function DickLit(x, y) {
@@ -318,6 +333,11 @@ let mousePressY = 0;
 let currentMouseX = 0;
 let currentMouseY = 0;
 let mouseDown = false;
+
+var Key = {
+    escape: false
+};
+
 
 function initStars(amount) {
     for (i = 0; i < amount; i++) {
@@ -508,32 +528,22 @@ populateManifestations(innerSolarSystem.masses);
 
 const massesList = document.querySelector("#masses-list");
 
-addEventListener(
-    "mousedown",
-    e => {
+addEventListener("mousedown", e => {
         if (gameState == gameStateEnum.PLAY) {
             mousePressX = e.clientX;
             mousePressY = e.clientY;
             mouseDown = true;
         }
-    },
-    false
-);
+    }, false);
 
-addEventListener(
-    "mousemove",
-    e => {
+addEventListener("mousemove", e => {
         if (gameState == gameStateEnum.PLAY) {
             currentMouseX = e.clientX;
             currentMouseY = e.clientY;
         }
-    },
-    false
-);
+    }, false);
 
-addEventListener(
-    "mouseup",
-    e => {
+addEventListener("mouseup", e => {
         if (gameState == gameStateEnum.PLAY) {
             const x = (mousePressX - width / 2) / scale;
 
@@ -558,52 +568,87 @@ addEventListener(
 
             mouseDown = false;
         }
-    },
-    false
-);
+    }, false);
+
+addEventListener("keydown", function(e){
+    var keyCode = (e.keyKode) ? e.keyKode : e.which;
+    switch(keyCode) {
+        case 27:
+            Key.escape = true;
+            gameState = gameState == gameStateEnum.PLAY ? gameStateEnum.PAUSE : gameStateEnum.PLAY;
+
+            if (gameState == gameStateEnum.PAUSE) {
+                // for (i in explosions) {
+                //     explosions[i].soundEffect.pause();
+                // }
+            } else {
+                // for (i in explosions) {
+                //     explosions[i].soundEffect.play();
+                // }
+            }
+
+
+
+
+
+
+            break;
+    }
+}, false);
+
+addEventListener("keyup", function(e){
+    var keyCode = (e.keyKode) ? e.keyKode : e.which;
+    switch(keyCode) {
+        case 27:
+            Key.escape = false;
+            break;
+    }
+}, false);
 
 const animate = () => {
-    planet.render();
-    populateEnemies();
+    if (gameState == gameStateEnum.PLAY) {
+        planet.render();
+        populateEnemies();
 
-    cBackground.clearRect(0, 0, 2400, 1200);
-    cBackground.drawImage(bgimg, 0, 0, 2400, 1200);
+        cBackground.clearRect(0, 0, 2400, 1200);
+        cBackground.drawImage(bgimg, 0, 0, 2400, 1200);
 
-    for (i in stars) stars[i].render();
+        for (i in stars) stars[i].render();
 
-    for (i in explosions) {
-        explosions[i].tick();
-    }
+        for (i in explosions) {
+            explosions[i].tick();
+        }
 
-    innerSolarSystem
-        .updatePositionVectors()
-        .updateAccelerationVectors()
-        .updateVelocityVectors();
+        innerSolarSystem
+            .updatePositionVectors()
+            .updateAccelerationVectors()
+            .updateVelocityVectors();
 
-    ctx.clearRect(0, 0, width, height);
+        ctx.clearRect(0, 0, width, height);
 
-    for (let i = 0; i < innerSolarSystem.masses.length; i++) {
-        //skip "earth"
-        if (i <= 0) continue;
+        for (let i = 0; i < innerSolarSystem.masses.length; i++) {
+            //skip "earth"
+            if (i <= 0) continue;
 
-        const massI = innerSolarSystem.masses[i];
-        const x = width / 2 + massI.x * scale;
-        const y = height / 2 + massI.y * scale;
+            const massI = innerSolarSystem.masses[i];
+            const x = width / 2 + massI.x * scale;
+            const y = height / 2 + massI.y * scale;
 
-        massI.manifestation.draw(x, y);
+            massI.manifestation.draw(x, y);
 
-        //border bounce
-        // if (x < radius || x > width - radius) massI.vx = -massI.vx;
-        //
-        // if (y < radius || y > height - radius) massI.vy = -massI.vy;
-    }
+            //border bounce
+            // if (x < radius || x > width - radius) massI.vx = -massI.vx;
+            //
+            // if (y < radius || y > height - radius) massI.vy = -massI.vy;
+        }
 
-    if (mouseDown) {
-        ctx.beginPath();
-        ctx.moveTo(mousePressX, mousePressY);
-        ctx.lineTo(currentMouseX, currentMouseY);
-        ctx.strokeStyle = "red";
-        ctx.stroke();
+        if (mouseDown) {
+            ctx.beginPath();
+            ctx.moveTo(mousePressX, mousePressY);
+            ctx.lineTo(currentMouseX, currentMouseY);
+            ctx.strokeStyle = "red";
+            ctx.stroke();
+        }
     }
 
     requestAnimationFrame(animate);
@@ -611,13 +656,23 @@ const animate = () => {
 
 function start() {
     volume = volumeSlider.value / 100;
+    musicVolume = musicVolumeSlider.value / 100;
 
     startBtn.style.display = 'none';
     optionsBtn.style.display = 'none';
+    playMusicBtn.style.display = 'none';
 
     gameState = gameStateEnum.PLAY;
 
     initStars(600);
+
+    menuMusic.pause();
+    menuMusic = new Audio('audio/game_music.mp3');
+    if (playMusicBtn.value == "unmuted") {
+        menuMusic.volume = musicVolume;
+        menuMusic.loop = true;
+        menuMusic.play();
+    }
 
     animate();
 }
@@ -630,18 +685,42 @@ function showOptions() {
 
     optionsBackBtn.style.display = 'inline';
     volumeSlider.style.display = 'inline';
+    musicVolumeSlider.style.display = 'inline';
 }
 
 function backOptions() {
     volumeSlider.style.display = 'none';
     optionsBackBtn.style.display = 'none';
+    musicVolumeSlider.style.display = 'none';
 
     startBtn.style.display = 'inline';
     optionsBtn.style.display = 'inline';
 }
 
+function init() {
+    cBackground.clearRect(0, 0, 2400, 1200);
+    cBackground.drawImage(menuImage, 0, 0, 2400, 1200);
+}
+
+function playMusic() {
+    if (playMusicBtn.value == "muted") {
+        menuMusic.play();
+        playMusicBtn.innerHTML = "Mute music";
+        playMusicBtn.value = "unmuted"
+    } else {
+        menuMusic.pause();
+        menuMusic.currentTime = 0;
+        playMusicBtn.innerHTML = "Play music";
+        playMusicBtn.value = "muted"
+    }
+}
+
+musicVolumeSlider.addEventListener("input", function(){
+    menuMusic.volume = musicVolumeSlider.value / 100;
+});
+
 //TODO username opgeven en coole avatar plaatsen met naam
-//TODO sound effects en music audio volume los trekken van elkaar
+
 //TODO difficulty setting
-//TODO build a pause function
+//TODO build a pause function TODO AUDIO PAUSE
 //TODO blackholes

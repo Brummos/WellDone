@@ -33,9 +33,25 @@
             height: 50px;
             font-size: 20px;
         }
+        #playMusicBtn {
+            position: absolute;
+            top: 1000px;
+            left: 2000px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+        }
         #volumeSlider {
             position: absolute;
             top: 520px;
+            left: 250px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+        }
+        #musicVolumeSlider {
+            position: absolute;
+            top: 580px;
             left: 250px;
             width: 200px;
             height: 50px;
@@ -60,8 +76,10 @@
 <button type="button" id="startBtn" onclick="start()">START</button>s
 <button type="button" id="optionsBtn" onclick="showOptions()">OPTIONS</button>
 <button type="button" id="optionsBackBtn" onclick="backOptions()">BACK</button>
+<button type="button" id="playMusicBtn" value="muted" onclick="playMusic()">Play music</button>
 
 <input id="volumeSlider" type="range" min="0" max="100" value="100" step="1"></input>
+<input id="musicVolumeSlider" type="range" min="0" max="100" value="100" step="1"></input>
 
 <section id="controls-wrapper">
     <!--<label>Mass of Added Planet</label>-->
