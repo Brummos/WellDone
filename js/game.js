@@ -6,68 +6,6 @@ gameStateEnum = {
 
 init();
 
-class Rocket {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.width = 40;
-        this.height = 80;
-        this.image = new Image();
-        this.image.src = "images/rocket.png";
-        this.velX = 0;
-        this.velY = 0;
-        this.speed = 2;
-        this.landed = false;
-        // this.audio = new Audio('audio/soundsample.mp3');
-        // this.audio.play();
-        //this.dd = false;
-    }
-
-    //TODO give object own canvas (dynamic)
-
-    render() {
-        if (!this.landed) {
-            this.collision();
-            this.move();
-        }
-
-
-          gRocket.clearRect(0, 0, width, height);
-           gRocket.drawImage(this.image, this.x, this.y, this.width, this.height);
-
-        if (this.landed) {
-            gRocket.translate(500, 500); //half canvas
-            gRocket.rotate(- (Math.PI / 180) /10);
-            gRocket.translate(-500, -500); //half canvas
-        }
-    };
-
-    move() {
-        var tx = 500 - this.x, //500 is center
-            ty = 500 - this.y,
-            dist = Math.sqrt(tx * tx + ty * ty);
-
-        if (dist >= this.speed) {
-            this.velX = (tx / dist) * this.speed;
-            this.velY = (ty / dist) * this.speed;
-            this.x += this.velX;
-            this.y += this.velY;
-        }
-    };
-
-    collision() {
-        var pixelData = gPlanet.getImageData(this.x, this.y, 1, 1).data;
-        for (var zx = 0, n = pixelData.length; zx < n; zx += 4) {
-            //console.log(pixelData[zx + 3].toString());
-
-            if (pixelData[zx + 3] != 0) {
-                this.landed = true;
-                break;
-            }
-        }
-    }
-}
-
 class nBodyProblem {
     constructor(params) {
         this.g = params.g;
@@ -162,7 +100,6 @@ var explosions = [];
 var dickLitList = [];
 var stars = [];
 
-
 //NEEDS TO BE CLASS
 function DickLit(x, y) {
     this.x = x;
@@ -183,6 +120,8 @@ function DickLit(x, y) {
 var planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/2)-(1000/2), 1000, 1000, cPlanetCanvas);
 var rocket = new Rocket(800, -30);
 var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
+
+var avatar = new Avatar(10, 10, "", cAvatarCanvas);
 
 const g = 20;//39.5; //gravity
 const dt = 0.008; //0.005 years is equal to 1.825 days //speed
@@ -440,6 +379,9 @@ const animate = () => {
 };
 
 function start() {
+
+    avatar.render();
+
     volume = volumeSlider.value / 100;
     musicVolume = musicVolumeSlider.value / 100;
 
@@ -469,6 +411,7 @@ function reset() {
     stars.splice(0, stars.length);
     innerSolarSystem.masses.splice(0, innerSolarSystem.masses.length);
 
+    cAvatar.clearRect(0, 0, 2400, 1200);
     ctx.clearRect(0, 0, 2400, 1200);
     gPlanet.clearRect(0, 0, 2400, 1200);
     cStars.clearRect(0, 0, 2400, 1200);
