@@ -4,65 +4,9 @@ gameStateEnum = {
     PAUSE : 'PAUSE'
 }
 
-var menuImage = new Image();
-menuImage.src = 'images/menu.jpg'; //menu
-
-var optionsImage = new Image();
-optionsImage.src = 'images/options.jpg'; //menu
-
-var cCircles = document.getElementById("canvas_circles").getContext('2d');
-var cDickLets = document.getElementById("canvas_dicklets").getContext('2d');
-var cPlanetCanvas = document.getElementById("canvas_planet");
-var gPlanet = document.getElementById("canvas_planet").getContext('2d');
-var gRocket = document.getElementById("canvas_rocket").getContext('2d');
-var cBackground = document.getElementById("canvas_background").getContext('2d');
-var cStars = document.getElementById("canvas_stars").getContext('2d');
-
-const canvas = document.querySelector("#canvas_enemies");
-const ctx = canvas.getContext("2d");
-const width = (canvas.width);
-const height = (canvas.height);
-
-var startBtn = document.getElementById("startBtn");
-var optionsBtn = document.getElementById("optionsBtn");
-var volumeSlider = document.getElementById("volumeSlider");
-var musicVolumeSlider = document.getElementById("musicVolumeSlider");
-var optionsBackBtn = document.getElementById("optionsBackBtn");
-var playMusicBtn = document.getElementById("playMusicBtn");
-var pauseOptionsBtn = document.getElementById("pauseOptionsBtn");
-var pauseBackBtn = document.getElementById("pauseBackBtn");
 
 
 init();
-
-// class Planet {
-//     constructor(x, y, width, height, canvas) {
-//         this.cx = x;
-//         this.cy = y;
-//         this.width = width;
-//         this.height = height;
-//         this.image = new Image();
-//         this.image.src = "images/planet.png";
-//         this.m = 2;
-//         this.x = -1.50324727873647e-6;
-//         this.y = -3.93762725944737e-6;
-//         this.z = -4.86567877183925e-8;
-//         this.vx = 3.1669325898331e-5;
-//         this.vy = -6.85489559263319e-6;
-//         this.vz = -7.90076642683254e-7;
-//         this.radius = 300;
-//         this.canvas = canvas;
-//         this.canvasContext = this.canvas.getContext('2d');
-//     }
-//
-//     render() {
-//         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-//         this.canvasContext.drawImage(this.image, this.cx, this.cy, this.width, this.height);
-//         this.canvasContext.translate(this.canvas.width/2, this.canvas.height/2);
-//         this.canvasContext.rotate(- (Math.PI / 180) /10);
-//         this.canvasContext.translate(-this.canvas.width/2, -this.canvas.height/2);
-//     };
-// }
 
 class Rocket {
     constructor(x, y) {
@@ -125,79 +69,6 @@ class Rocket {
         }
     }
 }
-
-class Explosion {
-    constructor(x, y, width, height, scale, canvasWidth, canvasHeight) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.scale = scale;
-        this.scaledWidth = this.scale * this.width;
-        this.scaledHeight = this.scale * this.height;
-        this.sheetCol = 0;
-        this.sheetRow = 0;
-        this.sheetLengthX = 8;
-        this.sheetLengthY = 8;
-        this.canvas = document.createElement('canvas');
-        this.canvas.id = "canvas_explosion" + explosions.length;
-        this.canvas.width = canvasWidth;
-        this.canvas.height = canvasHeight;
-        this.canvas.style.zzIndex = "8";
-//    canvas.style.position = "absolute";
-        this.canvas.style.border = "1px solid black";
-        document.getElementsByTagName("body")[0].appendChild(this.canvas);
-        this.canvasContext = this.canvas.getContext("2d");
-        this.soundEffect = new Audio('audio/explosion_effect.mp3');
-        this.soundEffect.volume = volume;
-    }
-
-    render(frameX, frameY, canvasX, canvasY) {
-        this.canvasContext.drawImage(explosionImg,
-            frameX * this.width, frameY * this.height,
-            this.width,
-            this.height,
-            canvasX,
-            canvasY,
-            this.scaledWidth,
-            this.scaledHeight);
-    };
-
-    tick() {
-        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.width); //TODO only where explosion is
-        if (this.sheetRow <= this.sheetLengthY) {
-            this.render(this.sheetCol, this.sheetRow, this.x-(this.width/2), this.y-(this.height/2));
-            this.sheetCol++;
-            if (this.sheetCol >= this.sheetLengthX) {
-                this.sheetCol = 0;
-                this.sheetRow++;
-            }
-
-            if (this.sheetRow > this.sheetLengthY) {
-                explosions.splice(explosions.indexOf(this), 1);
-                document.getElementsByTagName("body")[0].removeChild(this.canvas);
-            }
-        }
-    }
-}
-
-function Star(x, y) {
-    this.x = x;
-    this.y = y;
-    this.size = Math.random() * 3;
-    this.render = function() {
-        cStars.fillStyle = "white";
-        cStars.fillRect(this.x, this.y, this.size, this.size);
-    }
-    this.tick = function() {
-        // if (this.y > gBackgroundHeight + 4) {
-        //     stars.splice(stars.indexOf(this), 1);
-        //     return;
-        // }
-        // this.y++;
-
-    }
-} //needs to be a class
 
 class nBodyProblem {
     constructor(params) {
@@ -291,18 +162,11 @@ class nBodyProblem {
 }
 
 var gameState = gameStateEnum.MENU;
-var volume = 1;
-var musicVolume = 1;
-var explosionImg = new Image();
-explosionImg.src = 'images/boom.png';
-var bgimg = new Image();
-bgimg.src = 'images/bg.jpeg';
+
 var explosions = [];
 var dickLitList = [];
 var stars = [];
-var menuMusic = new Audio('audio/menu_audio.mp3');
-menuMusic.volume = musicVolume;
-menuMusic.loop = true;
+
 
 //NEEDS TO BE CLASS
 function DickLit(x, y) {
@@ -531,85 +395,7 @@ populateManifestations(innerSolarSystem.masses);
 
 const massesList = document.querySelector("#masses-list");
 
-addEventListener("mousedown", e => {
-        if (gameState == gameStateEnum.PLAY) {
-            mousePressX = e.clientX;
-            mousePressY = e.clientY;
-            mouseDown = true;
-        }
-    }, false);
 
-addEventListener("mousemove", e => {
-        if (gameState == gameStateEnum.PLAY) {
-            currentMouseX = e.clientX;
-            currentMouseY = e.clientY;
-        }
-    }, false);
-
-addEventListener("mouseup", e => {
-        if (gameState == gameStateEnum.PLAY) {
-            const x = (mousePressX - width / 2) / scale;
-
-            const y = (mousePressY - height / 2) / scale;
-            const z = 0;
-            const vx = (e.clientX - mousePressX) / 35;
-            const vy = (e.clientY - mousePressY) / 35;
-            const vz = 0;
-            const radius = 4;
-
-            innerSolarSystem.masses.push({
-                m: parseFloat(massesList.value),
-                x,
-                y,
-                z,
-                vx,
-                vy,
-                vz,
-                radius,
-                manifestation: new Manifestation(ctx, trailLength, radius)
-            });
-
-            mouseDown = false;
-        }
-    }, false);
-
-addEventListener("keydown", function(e) {
-    if (gameState != gameStateEnum.MENU) {
-    var keyCode = (e.keyKode) ? e.keyKode : e.which;
-    switch(keyCode) {
-        case 27:
-            Key.escape = true;
-            gameState = gameState == gameStateEnum.PLAY ? gameStateEnum.PAUSE : gameStateEnum.PLAY;
-
-            if (gameState == gameStateEnum.PAUSE) {
-
-                showPause();
-                // for (i in explosions) {
-                //     explosions[i].soundEffect.pause();
-                // }
-            } else {
-                // for (i in explosions) {
-                //     explosions[i].soundEffect.play();
-                // }
-
-                showUnpause();
-                //document.getElementById("canvas_pause").style.display = "none";
-            }
-
-
-            break;
-    }
-    }
-}, false);
-
-addEventListener("keyup", function(e){
-    var keyCode = (e.keyKode) ? e.keyKode : e.which;
-    switch(keyCode) {
-        case 27:
-            Key.escape = false;
-            break;
-    }
-}, false);
 
 const animate = () => {
     if (gameState == gameStateEnum.PLAY) {
@@ -704,87 +490,7 @@ function init() {
     cBackground.drawImage(menuImage, 0, 0, 2400, 1200);
 }
 
-/////////////////////OPTIONS////////////////////////////
 
-function exitGame() {
-    gameState = gameStateEnum.MENU;
-    reset();
-    showUnpause();
-
-    cCircles.clearRect(0, 0, 2400, 1200);
-    cDickLets.clearRect(0, 0, 2400, 1200);
-    gPlanet.clearRect(0, 0, 2400, 1200);
-    gRocket.clearRect(0, 0, 2400, 1200);
-    cBackground.clearRect(0, 0, 2400, 1200);
-    cStars.clearRect(0, 0, 2400, 1200);
-
-    init();
-
-    startBtn.style.display = 'inline';
-    optionsBtn.style.display = 'inline';
-    playMusicBtn.style.display = 'inline';
-
-    menuMusic.pause();
-    menuMusic = new Audio('audio/menu_audio.mp3');
-    menuMusic.volume = musicVolume;
-    menuMusic.loop = true;
-    if (playMusicBtn.value == "unmuted") {
-        menuMusic.play();
-    }
-}
-
-function showPause() {
-    document.getElementById("canvas_pause").style.display = "block";
-    pauseOptionsBtn.style.display = 'inline';
-    pauseBackBtn.style.display = 'inline';
-}
-
-function showUnpause() {
-    document.getElementById("canvas_pause").style.display = "none";
-    pauseOptionsBtn.style.display = 'none';
-    pauseBackBtn.style.display = 'none';
-}
-
-function showOptions() {
-    cBackground.clearRect(0, 0, 2400, 1200);
-    cBackground.drawImage(optionsImage, 0, 0, 2400, 1200);
-
-    startBtn.style.display = 'none';
-    optionsBtn.style.display = 'none';
-
-    optionsBackBtn.style.display = 'inline';
-    volumeSlider.style.display = 'inline';
-    musicVolumeSlider.style.display = 'inline';
-}
-
-function backOptions() {
-    cBackground.clearRect(0, 0, 2400, 1200);
-    cBackground.drawImage(menuImage, 0, 0, 2400, 1200);
-
-    volumeSlider.style.display = 'none';
-    optionsBackBtn.style.display = 'none';
-    musicVolumeSlider.style.display = 'none';
-
-    startBtn.style.display = 'inline';
-    optionsBtn.style.display = 'inline';
-}
-
-function playMusic() {
-    if (playMusicBtn.value == "muted") {
-        menuMusic.play();
-        playMusicBtn.innerHTML = "Mute music";
-        playMusicBtn.value = "unmuted"
-    } else {
-        menuMusic.pause();
-        menuMusic.currentTime = 0;
-        playMusicBtn.innerHTML = "Play music";
-        playMusicBtn.value = "muted"
-    }
-}
-
-musicVolumeSlider.addEventListener("input", function(){
-    menuMusic.volume = musicVolumeSlider.value / 100;
-});
 
 //TODO username opgeven en coole avatar plaatsen met naam
 
