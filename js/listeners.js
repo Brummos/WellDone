@@ -47,23 +47,19 @@ addEventListener("keydown", function(e) {
             case 27:
                 Key.escape = true;
                 gameState = gameState == gameStateEnum.PLAY ? gameStateEnum.PAUSE : gameStateEnum.PLAY;
-
                 if (gameState == gameStateEnum.PAUSE) {
-
+                    if (playMusicBtn.value == "unmuted") {
+                        menuMusic.pause();
+                        for (i in explosions) explosions[i].soundEffect.pause();
+                    }
                     showPause();
-                    // for (i in explosions) {
-                    //     explosions[i].soundEffect.pause();
-                    // }
                 } else {
-                    // for (i in explosions) {
-                    //     explosions[i].soundEffect.play();
-                    // }
-
+                    if (playMusicBtn.value == "unmuted") {
+                        menuMusic.play();
+                        for (i in explosions) explosions[i].soundEffect.play();
+                    }
                     showUnpause();
-                    //document.getElementById("canvas_pause").style.display = "none";
                 }
-
-
                 break;
         }
     }

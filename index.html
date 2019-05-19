@@ -106,12 +106,13 @@
 <canvas id="canvas_dicklets" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_circles" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_rocket" width="2400" height="1200" style="border: 1px solid black"></canvas>
+<canvas id="canvas_avatar" width="2400" height="1200" style="border: 1px solid black"></canvas>
 
 <canvas id="canvas_pause" width="2400" height="1200" style="border: 1px solid black"></canvas>
 
-<button type="button" id="startBtn" onclick="start()">START</button>s
-<button type="button" id="optionsBtn" onclick="showOptions()">OPTIONS</button>
-<button type="button" id="optionsBackBtn" onclick="backOptions()">BACK</button>
+<button type="button" id="startBtn" onclick="start()">Play</button>s
+<button type="button" id="optionsBtn" onclick="showOptions()">Options</button>
+<button type="button" id="optionsBackBtn" onclick="backOptions()">Back</button>
 <button type="button" id="playMusicBtn" value="muted" onclick="playMusic()">Play music</button>
 <button type="button" id="pauseOptionsBtn" onclick="">Options</button>
 <button type="button" id="pauseBackBtn" onclick="exitGame()">Exit</button>
@@ -120,11 +121,9 @@
 <input id="musicVolumeSlider" type="range" min="0" max="100" value="100" step="1"></input>
 
 <section id="controls-wrapper">
-    <!--<label>Mass of Added Planet</label>-->
     <select id="masses-list">
         <option value="0.000003003">Earth</option>
     </select>
-    <!--<button id="reset-button">Reset</button>-->
 </section>
 
 <script src="js/canvasContext.js"></script>

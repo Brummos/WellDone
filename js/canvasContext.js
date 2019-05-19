@@ -5,6 +5,7 @@ var gPlanet = document.getElementById("canvas_planet").getContext('2d');
 var gRocket = document.getElementById("canvas_rocket").getContext('2d');
 var cBackground = document.getElementById("canvas_background").getContext('2d');
 var cStars = document.getElementById("canvas_stars").getContext('2d');
+var cAvatar = document.getElementById("canvas_avatar").getContext('2d');
 
 const canvas = document.querySelector("#canvas_enemies");
 const ctx = canvas.getContext("2d");

@@ -22,7 +22,17 @@ class Explosion {
         this.canvasContext = this.canvas.getContext("2d");
         this.soundEffect = new Audio('audio/explosion_effect.mp3');
         this.soundEffect.volume = volume;
+
+        if (playMusicBtn.value == "unmuted") {
+            this.soundEffect.play();
+        }
     }
+
+    destroy() {
+        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.width);
+        explosions.splice(explosions.indexOf(this), 1);
+        document.getElementsByTagName("body")[0].removeChild(this.canvas);
+    };
 
     render(frameX, frameY, canvasX, canvasY) {
         this.canvasContext.drawImage(explosionImg,
@@ -36,7 +46,7 @@ class Explosion {
     };
 
     tick() {
-        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.width); //TODO only where explosion is
+        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.width);
         if (this.sheetRow <= this.sheetLengthY) {
             this.render(this.sheetCol, this.sheetRow, this.x-(this.width/2), this.y-(this.height/2));
             this.sheetCol++;

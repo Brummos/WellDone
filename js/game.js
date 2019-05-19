@@ -4,8 +4,6 @@ gameStateEnum = {
     PAUSE : 'PAUSE'
 }
 
-
-
 init();
 
 class Rocket {
@@ -129,9 +127,6 @@ class nBodyProblem {
                             if (pixelData[zx + 3].toString() != 0) { //.toString() ????
                                 var explosion = new Explosion(indexX, indexY, 256, 256, 1, 2400, 1200);
                                 explosions.push(explosion);
-                                if (playMusicBtn.value == "unmuted") {
-                                    explosion.soundEffect.play();
-                                }
                                 this.masses.splice(j, 1);
                                 break;
                             }
@@ -395,8 +390,6 @@ populateManifestations(innerSolarSystem.masses);
 
 const massesList = document.querySelector("#masses-list");
 
-
-
 const animate = () => {
     if (gameState == gameStateEnum.PLAY) {
         planet.render();
@@ -470,11 +463,17 @@ function start() {
 }
 
 function reset() {
-     explosions = [];
-     dickLitList = [];
-     stars = [];
+    for (i in explosions) explosions[i].destroy();
 
-     planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/2)-(1000/2), 1000, 1000, cPlanetCanvas);
+    dickLitList.splice(0, dickLitList.length);
+    stars.splice(0, stars.length);
+    innerSolarSystem.masses.splice(0, innerSolarSystem.masses.length);
+
+    ctx.clearRect(0, 0, 2400, 1200);
+    gPlanet.clearRect(0, 0, 2400, 1200);
+    cStars.clearRect(0, 0, 2400, 1200);
+
+    planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/2)-(1000/2), 1000, 1000, cPlanetCanvas);
      rocket = new Rocket(800, -30);
      dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
 
@@ -490,12 +489,13 @@ function init() {
     cBackground.drawImage(menuImage, 0, 0, 2400, 1200);
 }
 
+//TODO username and avatar
 
+//TODO start building enemies into the game
+//TODO score system and score screen
 
-//TODO username opgeven en coole avatar plaatsen met naam
+//TODO blackholes
 
 //TODO difficulty setting
-//TODO build a pause function TODO AUDIO PAUSE
-//TODO blackholes
-//TODO options screen
-//TODO back when explosion, still shows explosion
+
+//TODO when all above is done lets see if we can connect a DB for the scores
