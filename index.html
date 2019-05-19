@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SnakeGame</title>
+    <title>WellDone</title>
     <style>
         canvas{
             position: absolute;
@@ -25,8 +25,29 @@
             height: 50px;
             font-size: 20px;
         }
+        #pauseOptionsBtn {
+            position: absolute;
+            display: none;
+            top: 460px;
+            left: 1100px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+            z-index: 2;
+        }
+        #pauseBackBtn {
+            position: absolute;
+            display: none;
+            top: 520px;
+            left: 1100px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+            z-index: 2;
+        }
         #optionsBackBtn {
             position: absolute;
+            display: none;
             top: 460px;
             left: 250px;
             width: 200px;
@@ -43,6 +64,7 @@
         }
         #volumeSlider {
             position: absolute;
+            display: none;
             top: 520px;
             left: 250px;
             width: 200px;
@@ -51,11 +73,23 @@
         }
         #musicVolumeSlider {
             position: absolute;
+            display: none;
             top: 580px;
             left: 250px;
             width: 200px;
             height: 50px;
             font-size: 20px;
+        }
+        #canvas_pause {
+            position: fixed; /* Sit on top of the page content */
+            display: none; /* Hidden by default */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+            z-index: 1;/*!* Specify a stack order in case you're using a different order for other elements*/
+            cursor: pointer; /* Add a pointer on hover */
         }
     </style>
 </head>
@@ -73,10 +107,14 @@
 <canvas id="canvas_circles" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_rocket" width="2400" height="1200" style="border: 1px solid black"></canvas>
 
+<canvas id="canvas_pause" width="2400" height="1200" style="border: 1px solid black"></canvas>
+
 <button type="button" id="startBtn" onclick="start()">START</button>s
 <button type="button" id="optionsBtn" onclick="showOptions()">OPTIONS</button>
 <button type="button" id="optionsBackBtn" onclick="backOptions()">BACK</button>
 <button type="button" id="playMusicBtn" value="muted" onclick="playMusic()">Play music</button>
+<button type="button" id="pauseOptionsBtn" onclick="">Options</button>
+<button type="button" id="pauseBackBtn" onclick="exitGame()">Exit</button>
 
 <input id="volumeSlider" type="range" min="0" max="100" value="100" step="1"></input>
 <input id="musicVolumeSlider" type="range" min="0" max="100" value="100" step="1"></input>
@@ -89,6 +127,8 @@
     <!--<button id="reset-button">Reset</button>-->
 </section>
 
+<script src="js/planet.js"></script>
 <script src="js/game.js"></script>
+
 </body>
 </html>

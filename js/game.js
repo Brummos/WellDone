@@ -5,7 +5,10 @@ gameStateEnum = {
 }
 
 var menuImage = new Image();
-menuImage.src = 'images/menu.jpg';
+menuImage.src = 'images/menu.jpg'; //menu
+
+var optionsImage = new Image();
+optionsImage.src = 'images/options.jpg'; //menu
 
 var cCircles = document.getElementById("canvas_circles").getContext('2d');
 var cDickLets = document.getElementById("canvas_dicklets").getContext('2d');
@@ -23,43 +26,43 @@ const height = (canvas.height);
 var startBtn = document.getElementById("startBtn");
 var optionsBtn = document.getElementById("optionsBtn");
 var volumeSlider = document.getElementById("volumeSlider");
-volumeSlider.style.display = 'none'; //KAN DIT IN HTML?
 var musicVolumeSlider = document.getElementById("musicVolumeSlider");
-musicVolumeSlider.style.display = 'none'; //KAN DIT IN HTML?
 var optionsBackBtn = document.getElementById("optionsBackBtn");
-optionsBackBtn.style.display = 'none'; //KAN DIT IN HTML?
 var playMusicBtn = document.getElementById("playMusicBtn");
+var pauseOptionsBtn = document.getElementById("pauseOptionsBtn");
+var pauseBackBtn = document.getElementById("pauseBackBtn");
+
 
 init();
 
-class Planet {
-    constructor(x, y, width, height, canvas) {
-        this.cx = x;
-        this.cy = y;
-        this.width = width;
-        this.height = height;
-        this.image = new Image();
-        this.image.src = "images/planet.png";
-        this.m = 2;
-        this.x = -1.50324727873647e-6;
-        this.y = -3.93762725944737e-6;
-        this.z = -4.86567877183925e-8;
-        this.vx = 3.1669325898331e-5;
-        this.vy = -6.85489559263319e-6;
-        this.vz = -7.90076642683254e-7;
-        this.radius = 300;
-        this.canvas = canvas;
-        this.canvasContext = this.canvas.getContext('2d');
-    }
-
-    render() {
-        this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.canvasContext.drawImage(this.image, this.cx, this.cy, this.width, this.height);
-        this.canvasContext.translate(this.canvas.width/2, this.canvas.height/2);
-        this.canvasContext.rotate(- (Math.PI / 180) /10);
-        this.canvasContext.translate(-this.canvas.width/2, -this.canvas.height/2);
-    };
-}
+// class Planet {
+//     constructor(x, y, width, height, canvas) {
+//         this.cx = x;
+//         this.cy = y;
+//         this.width = width;
+//         this.height = height;
+//         this.image = new Image();
+//         this.image.src = "images/planet.png";
+//         this.m = 2;
+//         this.x = -1.50324727873647e-6;
+//         this.y = -3.93762725944737e-6;
+//         this.z = -4.86567877183925e-8;
+//         this.vx = 3.1669325898331e-5;
+//         this.vy = -6.85489559263319e-6;
+//         this.vz = -7.90076642683254e-7;
+//         this.radius = 300;
+//         this.canvas = canvas;
+//         this.canvasContext = this.canvas.getContext('2d');
+//     }
+//
+//     render() {
+//         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+//         this.canvasContext.drawImage(this.image, this.cx, this.cy, this.width, this.height);
+//         this.canvasContext.translate(this.canvas.width/2, this.canvas.height/2);
+//         this.canvasContext.rotate(- (Math.PI / 180) /10);
+//         this.canvasContext.translate(-this.canvas.width/2, -this.canvas.height/2);
+//     };
+// }
 
 class Rocket {
     constructor(x, y) {
@@ -570,7 +573,8 @@ addEventListener("mouseup", e => {
         }
     }, false);
 
-addEventListener("keydown", function(e){
+addEventListener("keydown", function(e) {
+    if (gameState != gameStateEnum.MENU) {
     var keyCode = (e.keyKode) ? e.keyKode : e.which;
     switch(keyCode) {
         case 27:
@@ -578,6 +582,8 @@ addEventListener("keydown", function(e){
             gameState = gameState == gameStateEnum.PLAY ? gameStateEnum.PAUSE : gameStateEnum.PLAY;
 
             if (gameState == gameStateEnum.PAUSE) {
+
+                showPause();
                 // for (i in explosions) {
                 //     explosions[i].soundEffect.pause();
                 // }
@@ -585,14 +591,14 @@ addEventListener("keydown", function(e){
                 // for (i in explosions) {
                 //     explosions[i].soundEffect.play();
                 // }
+
+                showUnpause();
+                //document.getElementById("canvas_pause").style.display = "none";
             }
 
 
-
-
-
-
             break;
+    }
     }
 }, false);
 
@@ -677,9 +683,72 @@ function start() {
     animate();
 }
 
+function reset() {
+     explosions = [];
+     dickLitList = [];
+     stars = [];
+
+     planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/2)-(1000/2), 1000, 1000, cPlanetCanvas);
+     rocket = new Rocket(800, -30);
+     dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
+
+     mousePressX = 0;
+     mousePressY = 0;
+     currentMouseX = 0;
+     currentMouseY = 0;
+    // mouseDown = false;
+}
+
+function init() {
+    cBackground.clearRect(0, 0, 2400, 1200);
+    cBackground.drawImage(menuImage, 0, 0, 2400, 1200);
+}
+
 /////////////////////OPTIONS////////////////////////////
 
+function exitGame() {
+    gameState = gameStateEnum.MENU;
+    reset();
+    showUnpause();
+
+    cCircles.clearRect(0, 0, 2400, 1200);
+    cDickLets.clearRect(0, 0, 2400, 1200);
+    gPlanet.clearRect(0, 0, 2400, 1200);
+    gRocket.clearRect(0, 0, 2400, 1200);
+    cBackground.clearRect(0, 0, 2400, 1200);
+    cStars.clearRect(0, 0, 2400, 1200);
+
+    init();
+
+    startBtn.style.display = 'inline';
+    optionsBtn.style.display = 'inline';
+    playMusicBtn.style.display = 'inline';
+
+    menuMusic.pause();
+    menuMusic = new Audio('audio/menu_audio.mp3');
+    menuMusic.volume = musicVolume;
+    menuMusic.loop = true;
+    if (playMusicBtn.value == "unmuted") {
+        menuMusic.play();
+    }
+}
+
+function showPause() {
+    document.getElementById("canvas_pause").style.display = "block";
+    pauseOptionsBtn.style.display = 'inline';
+    pauseBackBtn.style.display = 'inline';
+}
+
+function showUnpause() {
+    document.getElementById("canvas_pause").style.display = "none";
+    pauseOptionsBtn.style.display = 'none';
+    pauseBackBtn.style.display = 'none';
+}
+
 function showOptions() {
+    cBackground.clearRect(0, 0, 2400, 1200);
+    cBackground.drawImage(optionsImage, 0, 0, 2400, 1200);
+
     startBtn.style.display = 'none';
     optionsBtn.style.display = 'none';
 
@@ -689,17 +758,15 @@ function showOptions() {
 }
 
 function backOptions() {
+    cBackground.clearRect(0, 0, 2400, 1200);
+    cBackground.drawImage(menuImage, 0, 0, 2400, 1200);
+
     volumeSlider.style.display = 'none';
     optionsBackBtn.style.display = 'none';
     musicVolumeSlider.style.display = 'none';
 
     startBtn.style.display = 'inline';
     optionsBtn.style.display = 'inline';
-}
-
-function init() {
-    cBackground.clearRect(0, 0, 2400, 1200);
-    cBackground.drawImage(menuImage, 0, 0, 2400, 1200);
 }
 
 function playMusic() {
@@ -724,3 +791,5 @@ musicVolumeSlider.addEventListener("input", function(){
 //TODO difficulty setting
 //TODO build a pause function TODO AUDIO PAUSE
 //TODO blackholes
+//TODO options screen
+//TODO back when explosion, still shows explosion
