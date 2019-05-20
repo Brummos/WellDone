@@ -91,6 +91,26 @@
             z-index: 1;/*!* Specify a stack order in case you're using a different order for other elements*/
             cursor: pointer; /* Add a pointer on hover */
         }
+        #nameField {
+             position: absolute;
+             display: none;
+             top: 520px;
+             left: 1100px;
+             width: 200px;
+             height: 50px;
+             font-size: 20px;
+             z-index: 2;
+         }
+        #startGameBtn {
+            position: absolute;
+            display: none;
+            top: 580px;
+            left: 1100px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+            z-index: 2;
+        }
     </style>
 </head>
 <body>
@@ -110,15 +130,18 @@
 
 <canvas id="canvas_pause" width="2400" height="1200" style="border: 1px solid black"></canvas>
 
-<button type="button" id="startBtn" onclick="start()">Play</button>s
+<button type="button" id="startBtn" onclick="enterName()">Play</button>s
 <button type="button" id="optionsBtn" onclick="showOptions()">Options</button>
 <button type="button" id="optionsBackBtn" onclick="backOptions()">Back</button>
 <button type="button" id="playMusicBtn" value="muted" onclick="playMusic()">Play music</button>
 <button type="button" id="pauseOptionsBtn" onclick="">Options</button>
 <button type="button" id="pauseBackBtn" onclick="exitGame()">Exit</button>
+<button type="button" id="startGameBtn" onclick="start()">Start</button>
 
 <input id="volumeSlider" type="range" min="0" max="100" value="100" step="1"></input>
 <input id="musicVolumeSlider" type="range" min="0" max="100" value="100" step="1"></input>
+
+<input type="text" id="nameField" value=""><br>
 
 <section id="controls-wrapper">
     <select id="masses-list">

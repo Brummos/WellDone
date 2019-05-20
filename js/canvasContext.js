@@ -21,6 +21,9 @@ var optionsBackBtn = document.getElementById("optionsBackBtn");
 var playMusicBtn = document.getElementById("playMusicBtn");
 var pauseOptionsBtn = document.getElementById("pauseOptionsBtn");
 var pauseBackBtn = document.getElementById("pauseBackBtn");
+var startGameBtn = document.getElementById("startGameBtn");
+
+var nameField = document.getElementById("nameField");
 
 var menuImage = new Image();
 menuImage.src = 'images/menu.jpg'; //menu

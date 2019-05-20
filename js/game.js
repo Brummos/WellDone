@@ -121,7 +121,7 @@ var planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/
 var rocket = new Rocket(800, -30);
 var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
 
-var avatar = new Avatar(10, 10, "", cAvatarCanvas);
+var avatar = null;
 
 const g = 20;//39.5; //gravity
 const dt = 0.008; //0.005 years is equal to 1.825 days //speed
@@ -379,12 +379,15 @@ const animate = () => {
 };
 
 function start() {
+    avatar = new Avatar(10, 10, nameField.value, cAvatarCanvas);
 
     avatar.render();
 
     volume = volumeSlider.value / 100;
     musicVolume = musicVolumeSlider.value / 100;
 
+    nameField.style.display = 'none';
+    startGameBtn.style.display = 'none';
     startBtn.style.display = 'none';
     optionsBtn.style.display = 'none';
     playMusicBtn.style.display = 'none';
@@ -402,6 +405,15 @@ function start() {
     }
 
     animate();
+}
+
+function enterName() {
+    startBtn.style.display = 'none';
+    optionsBtn.style.display = 'none';
+    playMusicBtn.style.display = 'none';
+
+    nameField.style.display = 'inline';
+    startGameBtn.style.display = 'inline';
 }
 
 function reset() {
