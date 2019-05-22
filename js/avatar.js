@@ -13,7 +13,6 @@ class Avatar {
         this.mainImage.src = "images/avatar_new.png";
         this.barImage = new Image();
         this.barImage.src = "images/bar.png";
-        this.radius = 300;
         this.canvas = canvas;
         this.canvasContext = this.canvas.getContext('2d');
 

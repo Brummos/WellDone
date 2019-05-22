@@ -374,15 +374,10 @@ const animate = () => {
 
 function start() {
     avatar = new Avatar(10, 10, nameField.value, cAvatarCanvas);
-
     avatar.render();
 
     volume = volumeSlider.value / 100;
     musicVolume = musicVolumeSlider.value / 100;
-
-   // cPlayerCanvas.requestPointerLock();//style.cursor = 'none';
-
-    cPlayerCanvas.style.cursor = "none";
 
     nameField.style.display = 'none';
     startGameBtn.style.display = 'none';

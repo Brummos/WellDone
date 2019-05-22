@@ -49,24 +49,45 @@ musicVolumeSlider.addEventListener("input", function(){
     menuMusic.volume = musicVolumeSlider.value / 100;
 });
 
+var imagesloader = 0;
+
+function notify()
+{
+    alert('The imaged have been loaded into the browser cache.');
+}
+
+function loaded()
+{
+    imagesloader++;
+    // if (imagesloader == 5) notify();
+
+}
+
+
+
 function preloader()
 {
     menuImage = new Image();
     menuImage.src = 'images/menu.jpg'; //menu
+    menuImage.onload = loaded;
 
     optionsImage = new Image();
     optionsImage.src = 'images/options.jpg'; //menu
+    optionsImage.onload = loaded;
 
     explosionImg = new Image();
     explosionImg.src = 'images/boom.png';
+    explosionImg.onload = loaded;
 
     bgimg = new Image();
     bgimg.src = 'images/bg.jpeg';
+    bgimg.onload = loaded;
 
     menuMusic = new Audio('audio/menu_audio.mp3');
 
     avatarImg = new Image();
     avatarImg.src = "images/avatar_new.png";
+    avatarImg.onload = loaded;
 
 
 }
