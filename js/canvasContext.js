@@ -7,6 +7,8 @@ var cBackground = document.getElementById("canvas_background").getContext('2d');
 var cStars = document.getElementById("canvas_stars").getContext('2d');
 var cAvatarCanvas = document.getElementById("canvas_avatar");
 var cAvatar = document.getElementById("canvas_avatar").getContext('2d');
+var cPlayer = document.getElementById("canvas_player").getContext('2d');
+var cPlayerCanvas = document.getElementById("canvas_player");
 
 const canvas = document.querySelector("#canvas_enemies");
 const ctx = canvas.getContext("2d");
@@ -46,3 +48,25 @@ menuMusic.loop = true;
 musicVolumeSlider.addEventListener("input", function(){
     menuMusic.volume = musicVolumeSlider.value / 100;
 });
+
+function preloader()
+{
+    menuImage = new Image();
+    menuImage.src = 'images/menu.jpg'; //menu
+
+    optionsImage = new Image();
+    optionsImage.src = 'images/options.jpg'; //menu
+
+    explosionImg = new Image();
+    explosionImg.src = 'images/boom.png';
+
+    bgimg = new Image();
+    bgimg.src = 'images/bg.jpeg';
+
+    menuMusic = new Audio('audio/menu_audio.mp3');
+
+    avatarImg = new Image();
+    avatarImg.src = "images/avatar_new.png";
+
+
+}

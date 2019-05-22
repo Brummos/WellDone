@@ -113,10 +113,10 @@
         }
     </style>
 </head>
-<body>
+<body onLoad="preloader()">
 
 <!--<canvas id="ui_enemies" width="400" height="400" style="border: 1px solid black"></canvas>-->
-<!--<canvas id="canvas_player" width="400" height="400" style="border: 1px solid black"></canvas>-->
+
 <canvas id="canvas_background" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_stars" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_planet" width="2400" height="1200" style="border: 1px solid black"></canvas>
@@ -126,6 +126,7 @@
 <canvas id="canvas_dicklets" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_circles" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_rocket" width="2400" height="1200" style="border: 1px solid black"></canvas>
+<canvas id="canvas_player" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_avatar" width="2400" height="1200" style="border: 1px solid black"></canvas>
 
 <canvas id="canvas_pause" width="2400" height="1200" style="border: 1px solid black"></canvas>
@@ -155,6 +156,7 @@
 <script src="js/explosion.js"></script>
 <script src="js/planet.js"></script>
 <script src="js/rocket.js"></script>
+<script src="js/player.js"></script>
 <script src="js/game.js"></script>
 <script src="js/listeners.js"></script>
 <script src="js/buttons.js"></script>

@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="47a815fb-df8c-4b16-b7cc-e64b2cb954fa" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/images/avatar_main.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/bar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/player.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/avatar.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/avatar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/canvasContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/canvasContext.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/game.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/planet.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/planet.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -28,8 +28,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="124" column="39" lean-forward="true" selection-start-line="124" selection-start-column="39" selection-end-line="124" selection-end-column="39" />
+            <state relative-caret-position="1897">
+              <caret line="144" column="47" lean-forward="true" selection-start-line="144" selection-start-column="47" selection-end-line="144" selection-end-column="47" />
               <folding>
                 <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#canvas#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -46,27 +46,45 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="game.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="game.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="777">
-              <caret line="445" lean-forward="true" selection-start-line="445" selection-end-line="446" selection-end-column="26" />
+            <state relative-caret-position="204">
+              <caret line="98" column="20" lean-forward="true" selection-start-line="98" selection-start-column="20" selection-end-line="98" selection-end-column="20" />
+              <folding>
+                <element signature="n#nBodyProblem#0" />
+                <element signature="n#!!block;n#DickLit#0" />
+                <element signature="e#4118#4139#0" />
+                <element signature="n#!!block;n#initStars#0" />
+                <element signature="n#!!block;n#populateEnemies#0" />
+                <element signature="e#7005#7213#0" />
+                <element signature="e#7259#7347#0" />
+                <element signature="n#Manifestation#0" />
+                <element signature="e#8653#8848#0" />
+                <element signature="n#!!block;n#enterName#0" />
+                <element signature="n#!!block;n#reset#0" />
+                <element signature="n#!!block;n#init#0" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="avatar.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/js/avatar.js">
+      <file leaf-file-name="canvasContext.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/canvasContext.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="40" column="17" lean-forward="true" selection-start-line="40" selection-start-column="17" selection-end-line="41" selection-end-column="50" />
+            <state relative-caret-position="170">
+              <caret line="10" column="17" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="avatar_main.png" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/images/avatar_main.png">
-          <provider selected="true" editor-type-id="images" />
+      <file leaf-file-name="player.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/player.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="11" column="58" lean-forward="true" selection-start-line="11" selection-start-column="58" selection-end-line="11" selection-end-column="58" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -107,16 +125,17 @@
         <option value="$PROJECT_DIR$/js/main2.js" />
         <option value="$PROJECT_DIR$/js/coin.js" />
         <option value="$PROJECT_DIR$/js/man.js" />
-        <option value="$PROJECT_DIR$/js/planet.js" />
         <option value="$PROJECT_DIR$/js/star.js" />
         <option value="$PROJECT_DIR$/js/buttons.js" />
         <option value="$PROJECT_DIR$/js/listeners.js" />
         <option value="$PROJECT_DIR$/js/explosion.js" />
         <option value="$PROJECT_DIR$/js/rocket.js" />
+        <option value="$PROJECT_DIR$/js/avatar.js" />
         <option value="$PROJECT_DIR$/js/canvasContext.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/planet.js" />
+        <option value="$PROJECT_DIR$/js/player.js" />
         <option value="$PROJECT_DIR$/js/game.js" />
-        <option value="$PROJECT_DIR$/js/avatar.js" />
       </list>
     </option>
   </component>
@@ -130,8 +149,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="945" />
-    <option name="y" value="81" />
+    <option name="x" value="1126" />
+    <option name="y" value="32" />
     <option name="width" value="1513" />
     <option name="height" value="1016" />
   </component>
@@ -143,6 +162,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -164,7 +184,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -178,14 +197,14 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Brummos\WebstormProjects\WellDone\js" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Projects\JS\WellDone\images" />
       <recent name="C:\Projects\JS\WellDone\js\tests" />
       <recent name="C:\Projects\JS\WellDone\audio" />
       <recent name="C:\Users\Brummos\WebstormProjects\WellDone\images" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Brummos\WebstormProjects\WellDone\js" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -229,14 +248,16 @@
       <workItem from="1557788695028" duration="19675000" />
       <workItem from="1557952352950" duration="8772000" />
       <workItem from="1558208063546" duration="25168000" />
+      <workItem from="1558470935611" duration="287000" />
+      <workItem from="1558471288785" duration="8811000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="107422000" />
+    <option name="totallyTimeSpent" value="116520000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="945" y="81" width="1513" height="1016" extended-state="0" />
+    <frame x="1126" y="32" width="1513" height="1016" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.28456914" />
@@ -244,11 +265,11 @@
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="3" />
-      <window_info anchor="bottom" id="Run" order="6" visible="true" weight="0.32963374" />
+      <window_info anchor="bottom" id="Run" order="6" weight="0.32963374" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="1" />
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="7" weight="0.16204217" />
+      <window_info anchor="bottom" id="Debug" order="7" visible="true" weight="0.16204217" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -266,7 +287,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="81" />
+      <option name="time" value="92" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -489,13 +510,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/tests/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
-          <caret line="53" selection-start-line="53" selection-end-line="56" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/tests/blackhole.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2176">
@@ -507,13 +521,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3604">
           <caret line="214" lean-forward="true" selection-start-line="214" selection-end-line="214" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/tests/man.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="39" column="10" selection-start-line="39" selection-start-column="4" selection-end-line="39" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -530,13 +537,6 @@
     <entry file="file://$PROJECT_DIR$/images/coins.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/tests/main2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="104" column="5" lean-forward="true" selection-start-line="104" selection-start-column="5" selection-end-line="104" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/images/chicken.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -549,13 +549,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/images/rocket.png">
       <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/listeners.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="43" column="42" lean-forward="true" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/explosion.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -585,27 +578,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/planet.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="8" lean-forward="true" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="92" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/canvasContext.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="23" column="56" selection-start-line="23" selection-start-column="56" selection-end-line="23" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/images/avatar_main.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/images/avatar_new.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/tests/man.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="663">
+          <caret line="39" column="10" selection-start-line="39" selection-start-column="4" selection-end-line="39" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/tests/main2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4563">
+          <caret line="104" column="5" lean-forward="true" selection-start-line="104" selection-start-column="5" selection-end-line="104" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/listeners.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="50" lean-forward="true" selection-start-line="21" selection-start-column="50" selection-end-line="21" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/avatar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/tests/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="225" lean-forward="true" selection-start-line="225" selection-end-line="225" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="124" column="39" lean-forward="true" selection-start-line="124" selection-start-column="39" selection-end-line="124" selection-end-column="39" />
+        <state relative-caret-position="1897">
+          <caret line="144" column="47" lean-forward="true" selection-start-line="144" selection-start-column="47" selection-end-line="144" selection-end-column="47" />
           <folding>
             <element signature="n#style#0;n#canvas#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#canvas#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -621,17 +638,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/game.js">
+    <entry file="file://$PROJECT_DIR$/js/planet.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="777">
-          <caret line="445" lean-forward="true" selection-start-line="445" selection-end-line="446" selection-end-column="26" />
+        <state relative-caret-position="255">
+          <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/avatar.js">
+    <entry file="file://$PROJECT_DIR$/js/player.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="40" column="17" lean-forward="true" selection-start-line="40" selection-start-column="17" selection-end-line="41" selection-end-column="50" />
+        <state relative-caret-position="187">
+          <caret line="11" column="58" lean-forward="true" selection-start-line="11" selection-start-column="58" selection-end-line="11" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/canvasContext.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/game.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="98" column="20" lean-forward="true" selection-start-line="98" selection-start-column="20" selection-end-line="98" selection-end-column="20" />
+          <folding>
+            <element signature="n#nBodyProblem#0" />
+            <element signature="n#!!block;n#DickLit#0" />
+            <element signature="e#4118#4139#0" />
+            <element signature="n#!!block;n#initStars#0" />
+            <element signature="n#!!block;n#populateEnemies#0" />
+            <element signature="e#7005#7213#0" />
+            <element signature="e#7259#7347#0" />
+            <element signature="n#Manifestation#0" />
+            <element signature="e#8653#8848#0" />
+            <element signature="n#!!block;n#enterName#0" />
+            <element signature="n#!!block;n#reset#0" />
+            <element signature="n#!!block;n#init#0" />
+          </folding>
         </state>
       </provider>
     </entry>

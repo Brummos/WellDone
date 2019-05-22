@@ -100,6 +100,11 @@ var explosions = [];
 var dickLitList = [];
 var stars = [];
 
+var planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/2)-(1000/2), 1000, 1000, cPlanetCanvas);
+var player = new Player(100, 100, cPlayerCanvas);
+var avatar = null;
+
+
 //NEEDS TO BE CLASS
 function DickLit(x, y) {
     this.x = x;
@@ -117,11 +122,11 @@ function DickLit(x, y) {
     };
 }
 
-var planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/2)-(1000/2), 1000, 1000, cPlanetCanvas);
 var rocket = new Rocket(800, -30);
 var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
 
-var avatar = null;
+
+
 
 const g = 20;//39.5; //gravity
 const dt = 0.008; //0.005 years is equal to 1.825 days //speed
@@ -139,7 +144,6 @@ var Key = {
     escape: false
 };
 
-
 function initStars(amount) {
     for (i = 0; i < amount; i++) {
         stars.push(new Star(Math.random() * 2400, Math.random() * 1200));
@@ -151,23 +155,23 @@ function populateEnemies() {
     // gRocket.clearRect(0, 0, width, height);
     rocket.render();
 
-    cDickLets.clearRect(0, 0, width, height);
-    dickLit.render();
+    // cDickLets.clearRect(0, 0, width, height);
+    // dickLit.render();
 
-    // rotate enemies
-    cDickLets.translate(500, 500); //half canvas
-    cDickLets.rotate(- (Math.PI / 180) /10);
-    cDickLets.translate(-500, -500); //half canvas
+    // // rotate enemies
+    // cDickLets.translate(500, 500); //half canvas
+    // cDickLets.rotate(- (Math.PI / 180) /10);
+    // cDickLets.translate(-500, -500); //half canvas
 
-    // test circles
-    // inner circle
-    cCircles.beginPath();
-    cCircles.arc(500, 500, 330, 0, 2 * Math.PI);
-    cCircles.stroke();
-    // outer circle
-    cCircles.beginPath();
-    cCircles.arc(500, 500, 408, 0, 2 * Math.PI);
-    cCircles.stroke();
+    // // test circles
+    // // inner circle
+    // cCircles.beginPath();
+    // cCircles.arc(500, 500, 330, 0, 2 * Math.PI);
+    // cCircles.stroke();
+    // // outer circle
+    // cCircles.beginPath();
+    // cCircles.arc(500, 500, 408, 0, 2 * Math.PI);
+    // cCircles.stroke();
 
 
 
@@ -232,18 +236,7 @@ function populateEnemies() {
     //  }
 }
 
-const masses = [
-    {
-        // name: "",
-        // m: 2,
-        // x: -1.50324727873647e-6,
-        // y: -3.93762725944737e-6,
-        // z: -4.86567877183925e-8,
-        // vx: 3.1669325898331e-5,
-        // vy: -6.85489559263319e-6,
-        // vz: -7.90076642683254e-7,
-        // radius: 300
-
+const masses = [{
         name: "",
         m: planet.m,
         x: planet.x,
@@ -253,8 +246,7 @@ const masses = [
         vy: planet.vy,
         vz: planet.vz,
         radius: planet.radius
-    }
-];
+    }];
 
 const innerSolarSystem = new nBodyProblem({
     g,
@@ -334,6 +326,8 @@ const animate = () => {
         planet.render();
         populateEnemies();
 
+        player.render(currentMouseX, currentMouseY);
+
         cBackground.clearRect(0, 0, 2400, 1200);
         cBackground.drawImage(bgimg, 0, 0, 2400, 1200);
 
@@ -385,6 +379,10 @@ function start() {
 
     volume = volumeSlider.value / 100;
     musicVolume = musicVolumeSlider.value / 100;
+
+   // cPlayerCanvas.requestPointerLock();//style.cursor = 'none';
+
+    cPlayerCanvas.style.cursor = "none";
 
     nameField.style.display = 'none';
     startGameBtn.style.display = 'none';

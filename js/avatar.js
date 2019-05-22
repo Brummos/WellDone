@@ -10,7 +10,7 @@ class Avatar {
         this.image = new Image();
         this.image.src = "images/avatar.png";
         this.mainImage = new Image();
-        this.mainImage.src = "images/avatar_main.png";
+        this.mainImage.src = "images/avatar_new.png";
         this.barImage = new Image();
         this.barImage.src = "images/bar.png";
         this.radius = 300;
@@ -33,7 +33,7 @@ class Avatar {
         //background
         var posPower = this.PowerWidth * (this.power / 100);
         this.canvasContext.drawImage(this.barImage, 120, 143,this.initPower + posPower, 25);
-        this.canvasContext.drawImage(this.mainImage, 20, 20, 360, 150);
+        this.canvasContext.drawImage(avatarImg, 20, 20, 360, 150);
     //
     //     //avatar icon
     //     this.canvasContext.drawImage(this.image, 20+10, 20+10, 130, 130);
