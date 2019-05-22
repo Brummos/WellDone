@@ -101,7 +101,7 @@ var dickLitList = [];
 var stars = [];
 
 var planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/2)-(1000/2), 1000, 1000, cPlanetCanvas);
-var player = new Player(100, 100, cPlayerCanvas);
+var player = new Player(244/5, 392/5, cPlayerCanvas); //392 244
 var avatar = null;
 
 
@@ -447,3 +447,5 @@ function init() {
 //TODO difficulty setting
 
 //TODO when all above is done lets see if we can connect a DB for the scores
+//TODO atleast 3 weapons, we now have 1
+//TODO skill / weapon bar, like wow action bar
