@@ -23,6 +23,7 @@ addEventListener("mouseup", e => {
         const vy = (e.clientY - mousePressY) / 35;
         const vz = 0;
         const radius = 4;
+        const bone = new Bone(1280/30, 652/30);
 
         innerSolarSystem.masses.push({
             m: parseFloat(massesList.value),
@@ -33,6 +34,7 @@ addEventListener("mouseup", e => {
             vy,
             vz,
             radius,
+            bone, //392 244
             manifestation: new Manifestation(ctx, trailLength, radius)
         });
 

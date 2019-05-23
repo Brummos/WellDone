@@ -9,6 +9,11 @@ var cAvatarCanvas = document.getElementById("canvas_avatar");
 var cAvatar = document.getElementById("canvas_avatar").getContext('2d');
 var cPlayer = document.getElementById("canvas_player").getContext('2d');
 var cPlayerCanvas = document.getElementById("canvas_player");
+var cSkills = document.getElementById("canvas_skills").getContext('2d');
+var cSkillsCanvas = document.getElementById("canvas_skills");
+
+var cBone = document.getElementById("canvas_bone").getContext('2d');
+var cBoneCanvas = document.getElementById("canvas_bone");
 
 const canvas = document.querySelector("#canvas_enemies");
 const ctx = canvas.getContext("2d");
@@ -32,6 +37,9 @@ menuImage.src = 'images/menu.jpg'; //menu
 
 var optionsImage = new Image();
 optionsImage.src = 'images/options.jpg'; //menu
+
+var skillsImage = new Image();
+skillsImage.src = 'images/skillbar.png';
 
 var explosionImg = new Image();
 explosionImg.src = 'images/boom.png';

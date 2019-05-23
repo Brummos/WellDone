@@ -58,11 +58,14 @@ class nBodyProblem {
                         var indexX = Math.floor((massJ.x * scale) + (width / 2));
                         var indexY = Math.floor((massJ.y * scale) + (height / 2));
 
+                        massJ.bone.render(indexX, indexY);
+
                         var pixelData = gPlanet.getImageData(indexX, indexY, 1, 1).data;//event.offsetX, event.offsetY, 1, 1).data;
                         for (var zx = 0, n = pixelData.length; zx < n; zx += 4) {
                             //console.log(pixelData[zx + 3].toString());
 
                             if (pixelData[zx + 3].toString() != 0) { //.toString() ????
+                                massJ.bone.destroy();
                                 var explosion = new Explosion(indexX, indexY, 256, 256, 1, 2400, 1200);
                                 explosions.push(explosion);
                                 this.masses.splice(j, 1);
@@ -99,6 +102,7 @@ var gameState = gameStateEnum.MENU;
 var explosions = [];
 var dickLitList = [];
 var stars = [];
+var bones = [];
 
 var planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/2)-(1000/2), 1000, 1000, cPlanetCanvas);
 var player = new Player(244/5, 392/5, cPlayerCanvas); //392 244
@@ -132,7 +136,7 @@ const g = 20;//39.5; //gravity
 const dt = 0.008; //0.005 years is equal to 1.825 days //speed
 const softeningConstant = 0.15;
 const scale = 300;
-const trailLength = 35;
+const trailLength = 1;//35;
 
 let mousePressX = 0;
 let mousePressY = 0;
@@ -245,7 +249,8 @@ const masses = [{
         vx: planet.vx,
         vy: planet.vy,
         vz: planet.vz,
-        radius: planet.radius
+        radius: planet.radius,
+        bone: planet.bone
     }];
 
 const innerSolarSystem = new nBodyProblem({
@@ -325,6 +330,13 @@ const animate = () => {
     if (gameState == gameStateEnum.PLAY) {
         planet.render();
         populateEnemies();
+
+
+        // bone.render(1743, 540);
+
+        cSkills.clearRect(0, 0, 2400, 1200);
+        cSkills.drawImage(skillsImage, 1200-(29*2), 1200-(58*2), 216*2, 58*2);
+
 
         player.render(currentMouseX, currentMouseY);
 

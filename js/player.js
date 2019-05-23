@@ -19,7 +19,7 @@ class Player {
         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.angle = Math.atan2(y - (this.canvas.height / 2), x - (this.canvas.width / 2));
 
-        console.log(Math.atan2(y,  x) / Math.PI * 180);
+        //console.log(Math.atan2(y,  x) / Math.PI * 180);
 
         if (this.angle < this.angleOld) {
             this.image.src = "images/player2.png";

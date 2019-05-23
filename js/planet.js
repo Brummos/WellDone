@@ -16,6 +16,7 @@ class Planet {
         this.radius = 300;
         this.canvas = canvas;
         this.canvasContext = this.canvas.getContext('2d');
+        this.bone = null;
     };
 
     render() {
