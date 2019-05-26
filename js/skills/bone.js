@@ -29,6 +29,7 @@ class Bone {
 
     destroy() {
         this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.width);
+        bones.splice(bones.indexOf(this), 1);
         document.getElementsByTagName("body")[0].removeChild(this.canvas);
     };
 }

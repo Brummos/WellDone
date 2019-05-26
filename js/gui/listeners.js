@@ -24,6 +24,7 @@ addEventListener("mouseup", e => {
         const vz = 0;
         const radius = 4;
         const bone = new Bone(1280/30, 652/30);
+        bones.push(bone);
 
         innerSolarSystem.masses.push({
             m: parseFloat(massesList.value),

@@ -3,12 +3,14 @@ function exitGame() {
     reset();
     showUnpause();
 
-    cCircles.clearRect(0, 0, 2400, 1200);
-    cDickLets.clearRect(0, 0, 2400, 1200);
-    gPlanet.clearRect(0, 0, 2400, 1200);
-    gRocket.clearRect(0, 0, 2400, 1200);
-    cBackground.clearRect(0, 0, 2400, 1200);
-    cStars.clearRect(0, 0, 2400, 1200);
+    // cSkills.clearRect(0, 0, 2400, 1200);
+    // cPlayer.clearRect(0, 0, 2400, 1200);
+    // cCircles.clearRect(0, 0, 2400, 1200);
+    // cDickLets.clearRect(0, 0, 2400, 1200);
+    // gPlanet.clearRect(0, 0, 2400, 1200);
+    // gRocket.clearRect(0, 0, 2400, 1200);
+    // cBackground.clearRect(0, 0, 2400, 1200);
+    // cStars.clearRect(0, 0, 2400, 1200);
 
     init();
 

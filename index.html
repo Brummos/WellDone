@@ -116,11 +116,11 @@
 <body onLoad="preloader()">
 
 <!--<canvas id="ui_enemies" width="400" height="400" style="border: 1px solid black"></canvas>-->
+<!--<canvas id="canvas_arrow" width="400" height="400" style="border: 1px solid black"></canvas>-->
 
 <canvas id="canvas_background" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_stars" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_planet" width="2400" height="1200" style="border: 1px solid black"></canvas>
-<!--<canvas id="canvas_arrow" width="400" height="400" style="border: 1px solid black"></canvas>-->
 <canvas id="canvas_explosions" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_enemies" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_dicklets" width="2400" height="1200" style="border: 1px solid black"></canvas>
@@ -130,7 +130,7 @@
 <canvas id="canvas_avatar" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_bone" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_skills" width="2400" height="1200" style="border: 1px solid black"></canvas>
-
+<canvas id="canvas_shield" width="2400" height="1200" style="border: 1px solid black"></canvas>
 <canvas id="canvas_pause" width="2400" height="1200" style="border: 1px solid black"></canvas>
 
 <button type="button" id="startBtn" onclick="enterName()">Play</button>s
@@ -152,17 +152,18 @@
     </select>
 </section>
 
-<script src="js/canvasContext.js"></script>
-<script src="js/avatar.js"></script>
-<script src="js/star.js"></script>
-<script src="js/explosion.js"></script>
-<script src="js/bone.js"></script>
-<script src="js/planet.js"></script>
-<script src="js/rocket.js"></script>
-<script src="js/player.js"></script>
+<script src="js/gui/canvasContext.js"></script>
+<script src="js/gui/avatar.js"></script>
+<script src="js/world/star.js"></script>
+<script src="js/effects/explosion.js"></script>
+<script src="js/skills/bone.js"></script>
+<script src="js/world/planet.js"></script>
+<script src="js/enemies/rocket.js"></script>
+<script src="js/skills/shield.js"></script>
+<script src="js/player/player.js"></script>
 <script src="js/game.js"></script>
-<script src="js/listeners.js"></script>
-<script src="js/buttons.js"></script>
+<script src="js/gui/listeners.js"></script>
+<script src="js/gui/buttons.js"></script>
 
 </body>
 </html>

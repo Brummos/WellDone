@@ -109,6 +109,10 @@ var player = new Player(244/5, 392/5, cPlayerCanvas); //392 244
 var avatar = null;
 
 
+// // skills
+// var shield = new Shield(0, 0, 100, 100, cShieldCanvas);
+
+
 //NEEDS TO BE CLASS
 function DickLit(x, y) {
     this.x = x;
@@ -128,7 +132,6 @@ function DickLit(x, y) {
 
 var rocket = new Rocket(800, -30);
 var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
-
 
 
 
@@ -334,11 +337,19 @@ const animate = () => {
 
         // bone.render(1743, 540);
 
+
+
         cSkills.clearRect(0, 0, 2400, 1200);
         cSkills.drawImage(skillsImage, 1200-(29*2), 1200-(58*2), 216*2, 58*2);
 
 
+
+
         player.render(currentMouseX, currentMouseY);
+
+
+        // shield.render(player.x);
+
 
         cBackground.clearRect(0, 0, 2400, 1200);
         cBackground.drawImage(bgimg, 0, 0, 2400, 1200);
@@ -424,14 +435,27 @@ function enterName() {
 function reset() {
     for (i in explosions) explosions[i].destroy();
 
+    for (i in bones) bones[i].destroy();
+
     dickLitList.splice(0, dickLitList.length);
     stars.splice(0, stars.length);
     innerSolarSystem.masses.splice(0, innerSolarSystem.masses.length);
 
-    cAvatar.clearRect(0, 0, 2400, 1200);
-    ctx.clearRect(0, 0, 2400, 1200);
+
+    cSkills.clearRect(0, 0, 2400, 1200);
+    cPlayer.clearRect(0, 0, 2400, 1200);
+    cCircles.clearRect(0, 0, 2400, 1200);
+    cDickLets.clearRect(0, 0, 2400, 1200);
     gPlanet.clearRect(0, 0, 2400, 1200);
+    gRocket.clearRect(0, 0, 2400, 1200);
+    cBackground.clearRect(0, 0, 2400, 1200);
     cStars.clearRect(0, 0, 2400, 1200);
+
+
+     cAvatar.clearRect(0, 0, 2400, 1200);
+     ctx.clearRect(0, 0, 2400, 1200);
+    // gPlanet.clearRect(0, 0, 2400, 1200);
+    // cStars.clearRect(0, 0, 2400, 1200);
 
     planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/2)-(1000/2), 1000, 1000, cPlanetCanvas);
      rocket = new Rocket(800, -30);
