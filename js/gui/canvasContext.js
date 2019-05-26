@@ -14,6 +14,10 @@ var cSkillsCanvas = document.getElementById("canvas_skills");
 var cShield = document.getElementById("canvas_shield").getContext('2d');
 var cShieldCanvas = document.getElementById("canvas_shield");
 
+var cSkillCD1 = document.getElementById("canvas_skill_cd1").getContext('2d');
+var cSkillCD1Canvas = document.getElementById("canvas_skill_cd1");
+
+
 var cBone = document.getElementById("canvas_bone").getContext('2d');
 var cBoneCanvas = document.getElementById("canvas_bone");
 
