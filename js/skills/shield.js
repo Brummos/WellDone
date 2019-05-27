@@ -1,12 +1,12 @@
 class Shield {
-    constructor(width, height, canvas) {
+    constructor(width, height, radius, canvas) {
         this.y = 0;
         this.timer = 10;
         this.initHealth = 100;
         this.health = this.initHealth;
         this.width = width;
         this.height = height;
-        this.radius = 500;
+        this.radius = radius;
         this.image = new Image();
         this.image.src = "images/forceField.png";
         this.canvas = canvas;

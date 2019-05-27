@@ -75,7 +75,7 @@ addEventListener("keydown", function(e) {
                 Key.q = true;
                 if (cd1 == null || !cd1.onCooldown) {
                     cd1 = new SkillCooldown(1838, 1101, 145, -105, 10, cSkillCD1Canvas);
-                    shield = new Shield(244/5, 392/5, cShieldCanvas); //392 244
+                    shield = new Shield(244/5, 392/5, playerRadius, cShieldCanvas); //392 244
                 }
                 break;
             case 87:

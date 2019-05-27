@@ -8,13 +8,15 @@ init();
 
 var gameState = gameStateEnum.MENU;
 
+var playerRadius = 500;
+
 var explosions = [];
 var dickLitList = [];
 var stars = [];
 var bones = [];
 
 var planet = new Planet((cPlanetCanvas.width/2)-(1000/2), (cPlanetCanvas.height/2)-(1000/2), 1000, 1000, cPlanetCanvas);
-var player = new Player(244/5, 392/5, cPlayerCanvas); //392 244
+var player = new Player(244/5, 392/5, playerRadius, cPlayerCanvas); //392 244
 var avatar = null;
 
 var skillbarScale =  1.5;
@@ -28,8 +30,16 @@ var cd3 = new SkillCooldown(2167, 1105, 145, -111, 15, cSkillCD3Canvas); //996
 var shield = null;//null;//new Shield(244/5, 392/5, cShieldCanvas); //392 244
 
 
+
+var smokePar = null;
+var smokePar2 = null;
 var rocket = new Rocket(800, -30);
 var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
+
+
+
+
+
 
 const g = 20;//39.5; //gravity
 const dt = 0.008; //0.005 years is equal to 1.825 days //speed
@@ -233,9 +243,14 @@ const animate = () => {
         cd2.render();
         cd3.render();
 
-
         planet.render();
         player.render(currentMouseX, currentMouseY);
+
+
+
+        smokePar.tick();
+        smokePar2.tick();
+
 
         if (shield != null) {
             shield.render(currentMouseX, currentMouseY);
@@ -283,6 +298,10 @@ const animate = () => {
 };
 
 function start() {
+
+    smokePar = new SmokeParticle(600, 600, 1); //392 244
+    smokePar2 = new SmokeParticle(620, 620, 2); //392 244
+
     avatar = new Avatar(10, 10, nameField.value, cAvatarCanvas);
     avatar.render();
 
@@ -363,7 +382,7 @@ function init() {
 //TODO atleast 3 weapons, we now have 1
 //TODO username and avatar
 
-//TODO make tyhe other planets spin, all different speed (put stars behind planets
+//TODO make the other planets spin, all different speed (put stars behind planets)
 
 //TODO start building enemies into the game
 //TODO score system and score screen
@@ -373,4 +392,7 @@ function init() {
 //TODO difficulty setting
 
 //TODO when all above is done lets see if we can connect a DB for the scores
+
+//TODO var interval = 10 //  / interval == 0 could be a possible deplay
+// i%interval == 0
 
