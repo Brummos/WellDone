@@ -1,3 +1,10 @@
+var Key = {
+    escape: false,
+    q: false,
+    w: false,
+    e: false
+};
+
 addEventListener("mousedown", e => {
     if (gameState == gameStateEnum.PLAY) {
         mousePressX = e.clientX;
@@ -64,6 +71,25 @@ addEventListener("keydown", function(e) {
                     showUnpause();
                 }
                 break;
+            case 81:
+                Key.q = true;
+                if (cd1 == null || !cd1.onCooldown) {
+                    cd1 = new SkillCooldown(1838, 1101, 145, -105, 10, cSkillCD1Canvas);
+                    shield = new Shield(244/5, 392/5, cShieldCanvas); //392 244
+                }
+                break;
+            case 87:
+                Key.w = true;
+                if (!cd2.onCooldown) {
+                    cd2 = new SkillCooldown(2003, 1101, 142, -105, 2, cSkillCD2Canvas);
+                }
+                break;
+            case 69:
+                Key.e = true;
+                if (!cd3.onCooldown) {
+                    cd3 = new SkillCooldown(2167, 1105, 145, -111, 15, cSkillCD3Canvas);
+                }
+                break;
         }
     }
 }, false);
@@ -73,6 +99,9 @@ addEventListener("keyup", function(e){
     switch(keyCode) {
         case 27:
             Key.escape = false;
+            break;
+        case 69:
+            Key.e = false;
             break;
     }
 }, false);

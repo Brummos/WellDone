@@ -10,7 +10,7 @@ class Player {
         this.image.src = "images/player2.png";
 
         this.image2 = new Image();
-        this.image2.src = "images/planet.png";
+        this.image2.src = "images/forceField.png";
 
         this.canvas = canvas;
         this.canvasContext = this.canvas.getContext('2d');
@@ -39,15 +39,19 @@ class Player {
 
 
 
-        cShield.setTransform(1, 0, 0, 1, 0, 0);
-        cShield.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.angle = Math.atan2(y - (this.canvas.height / 2), x - (this.canvas.width / 2));
-        cShield.setTransform(1, 0, 0, 1, (this.canvas.width / 2), (this.canvas.height / 2));
-        cShield.rotate(this.angle);
+        // cShield.setTransform(1, 0, 0, 1, 0, 0);
+        // cShield.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        // this.angle = Math.atan2(y - (this.canvas.height / 2), x - (this.canvas.width / 2));
+        // cShield.setTransform(1, 0, 0, 1, (this.canvas.width / 2), (this.canvas.height / 2));
+        // cShield.rotate(this.angle);
+        //
+        // cShield.globalAlpha = 0.4;
+        //
+        // cShield.drawImage(this.image2, this.radius - (150 / 2), this.y - (200 / 2), 150, 200);
 
-        cShield.globalAlpha = 0.4;
 
-        cShield.drawImage(this.image2, this.radius - (this.width / 2), this.y - (this.height / 2), this.width, this.height);
+
+
 
         // cShield.clearRect(0, 0, this.canvas.width, this.canvas.height);
         // cShield.drawImage(this.image, 0, 0, this.width, this.height);

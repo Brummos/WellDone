@@ -16,6 +16,11 @@ var cShieldCanvas = document.getElementById("canvas_shield");
 
 var cSkillCD1 = document.getElementById("canvas_skill_cd1").getContext('2d');
 var cSkillCD1Canvas = document.getElementById("canvas_skill_cd1");
+var cSkillCD2 = document.getElementById("canvas_skill_cd2").getContext('2d');
+var cSkillCD2Canvas = document.getElementById("canvas_skill_cd2");
+var cSkillCD3 = document.getElementById("canvas_skill_cd3").getContext('2d');
+var cSkillCD3Canvas = document.getElementById("canvas_skill_cd3");
+
 
 
 var cBone = document.getElementById("canvas_bone").getContext('2d');

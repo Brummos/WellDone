@@ -20,10 +20,13 @@ var avatar = null;
 var skillbarScale =  1.5;
 var skillbar = new Skillbar(2400-((367*skillbarScale) + 50), 1200-((126*skillbarScale) + 30), 367*skillbarScale, 126*skillbarScale, cSkillsCanvas); //392 244
 
-var cd1 = new SkillCooldown(500, 500, 5, cSkillCD1Canvas);
-
+var cd1 = null;//new SkillCooldown(1838, 1101, 145, -105, 10, cSkillCD1Canvas); //996
+var cd2 = new SkillCooldown(2003, 1101, 142, -105, 2, cSkillCD2Canvas); //996
+var cd3 = new SkillCooldown(2167, 1105, 145, -111, 15, cSkillCD3Canvas); //996
 // // skills
 // var shield = new Shield(0, 0, 100, 100, cShieldCanvas);
+var shield = null;//null;//new Shield(244/5, 392/5, cShieldCanvas); //392 244
+
 
 var rocket = new Rocket(800, -30);
 var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
@@ -39,10 +42,6 @@ let mousePressY = 0;
 let currentMouseX = 0;
 let currentMouseY = 0;
 let mouseDown = false;
-
-var Key = {
-    escape: false
-};
 
 function initStars(amount) {
     for (i = 0; i < amount; i++) {
@@ -230,11 +229,17 @@ const animate = () => {
 
         skillbar.render();
 
-        cd1.render();
+        if (cd1 != null) cd1.render();
+        cd2.render();
+        cd3.render();
 
 
         planet.render();
         player.render(currentMouseX, currentMouseY);
+
+        if (shield != null) {
+            shield.render(currentMouseX, currentMouseY);
+        }
 
         populateEnemies();
 
@@ -355,7 +360,10 @@ function init() {
     cBackground.drawImage(menuImage, 0, 0, 2400, 1200);
 }
 
+//TODO atleast 3 weapons, we now have 1
 //TODO username and avatar
+
+//TODO make tyhe other planets spin, all different speed (put stars behind planets
 
 //TODO start building enemies into the game
 //TODO score system and score screen
@@ -365,5 +373,4 @@ function init() {
 //TODO difficulty setting
 
 //TODO when all above is done lets see if we can connect a DB for the scores
-//TODO atleast 3 weapons, we now have 1
-//TODO skill / weapon bar, like wow action bar
+
