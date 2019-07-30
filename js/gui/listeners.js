@@ -80,14 +80,16 @@ addEventListener("keydown", function(e) {
                 break;
             case 87:
                 Key.w = true;
-                if (!cd2.onCooldown) {
+                if (cd2 == null || !cd2.onCooldown) {
                     cd2 = new SkillCooldown(2003, 1101, 142, -105, 2, cSkillCD2Canvas);
                 }
                 break;
             case 69:
                 Key.e = true;
-                if (!cd3.onCooldown) {
-                    cd3 = new SkillCooldown(2167, 1105, 145, -111, 15, cSkillCD3Canvas);
+                if (cd3 == null || !cd3.onCooldown) {
+                    cd3 = new SkillCooldown(2167, 1105, 145, -111, 1, cSkillCD3Canvas); //15
+                    meteor = new Meteor(-50, 50, 3552/100, 2453/100, cMeteorCanvas); //392 244 cSkillCD1Canvas cMeteorCanvas //240 heigth
+                   // meteor = new Meteor(-50, 240, 20, 20, cMeteorCanvas); //392 244 cSkillCD1Canvas cMeteorCanvas
                 }
                 break;
         }

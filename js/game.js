@@ -6,12 +6,13 @@ gameStateEnum = {
 
 init();
 
+var testt = 1;
+
 var gameState = gameStateEnum.MENU;
 
 var playerRadius = 500;
 
 var explosions = [];
-var dickLitList = [];
 var stars = [];
 var bones = [];
 
@@ -23,20 +24,22 @@ var skillbarScale =  1.5;
 var skillbar = new Skillbar(2400-((367*skillbarScale) + 50), 1200-((126*skillbarScale) + 30), 367*skillbarScale, 126*skillbarScale, cSkillsCanvas); //392 244
 
 var cd1 = null;//new SkillCooldown(1838, 1101, 145, -105, 10, cSkillCD1Canvas); //996
-var cd2 = new SkillCooldown(2003, 1101, 142, -105, 2, cSkillCD2Canvas); //996
-var cd3 = new SkillCooldown(2167, 1105, 145, -111, 15, cSkillCD3Canvas); //996
+var cd2 = null;//new SkillCooldown(2003, 1101, 142, -105, 2, cSkillCD2Canvas); //996
+var cd3 = null;//new SkillCooldown(2167, 1105, 145, -111, 15, cSkillCD3Canvas); //996 //15
 // // skills
 // var shield = new Shield(0, 0, 100, 100, cShieldCanvas);
 var shield = null;//null;//new Shield(244/5, 392/5, cShieldCanvas); //392 244
 
 
-
-var smokePar = null;
-var smokePar2 = null;
+var meteor = null;
+// var smokePar = null;
+// var smokePar2 = null;
 var rocket = new Rocket(800, -30);
-var dickLit = new DickLit(100, (height/2)-40/2); //(width/2)-40/2
 
+var dickLitList = [];
+var dickLit = new DickLit(780, (height/2)-40/2); //(width/2)-40/2
 
+dickLitList.push(dickLit);
 
 
 
@@ -62,24 +65,60 @@ function initStars(amount) {
 function populateEnemies() {
     ////TEST STUFF
     // gRocket.clearRect(0, 0, width, height);
-    rocket.render();
+   // rocket.render();
 
     // cDickLets.clearRect(0, 0, width, height);
-    // dickLit.render();
+    cDickLets.clearRect(0, 0, 2400, 1200);
+    //dickLit.render();
 
-    // // rotate enemies
-    // cDickLets.translate(500, 500); //half canvas
-    // cDickLets.rotate(- (Math.PI / 180) /10);
-    // cDickLets.translate(-500, -500); //half canvas
+    for (let i in dickLitList) {
+        dickLitList[i].render();
+        dickLitList[i].tick();
+    }
 
-    // // test circles
-    // // inner circle
-    // cCircles.beginPath();
-    // cCircles.arc(500, 500, 330, 0, 2 * Math.PI);
-    // cCircles.stroke();
+    // rotate enemies
+
+//     var t = new Transform();
+//     console.log(t.transformPoint(1200, 600)); // will be just [5,6]
+// // apply the same transformations that you did to the canvas
+//     t.rotate(- (Math.PI / 180) /10);
+//     console.log(t.transformPoint(1200, 600)); // will be [-2.347, 7.449]
+
+    cDickLets.translate(1200, 600); //half canvas w , h
+    cDickLets.rotate(- (Math.PI / 180) /10);
+    cDickLets.translate(-1200, -600); //half canvas
+
+
+    // test circles
+    // inner circle
+
+    // let pat = new Image();
+    // pat.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/16777216colors.png/100px-16777216colors.png";
+    // pat.onload = function () {
+    //     var pattern = ctx.createPattern(pat, "repeat");
+    //     cCircles.fillStyle = pattern;
+    //     cCircles.beginPath();
+    //     cCircles.arc(1200, 600, 330, 0, 2 * Math.PI);
+    //     cCircles.stroke();
+    //     cCircles.fill();
+    //     // this.canvasContext.fillStyle = pattern;
+    //     // this.canvasContext.beginPath();
+    //     // this.canvasContext.arc(100, 100, 50, 0, 2 * Math.PI);
+    //     // // translate canvas to offset where the image coordinates are for .fill()
+    //     // //if (this.canvasContext.canvas === canvas2) {
+    //     // this.canvasContext.translate(50, 50);
+    //     // // }
+    //     // this.canvasContext.fill();
+    //     // // restore ctx back to before the translate()
+    //     // this.canvasContext.restore();
+    // }
+    // //
+    // // cCircles.beginPath();
+    // // cCircles.arc(1200, 600, 330, 0, 2 * Math.PI);
+    // // cCircles.stroke();
     // // outer circle
     // cCircles.beginPath();
-    // cCircles.arc(500, 500, 408, 0, 2 * Math.PI);
+    // cCircles.arc(1200, 600, 408, 0, 2 * Math.PI);
     // cCircles.stroke();
 
 
@@ -94,7 +133,7 @@ function populateEnemies() {
     //     console.log(pixelData[zx + 3].toString());
     // }
 
-    // // get random position between 2 radius
+    // // // get random position between 2 radius
     //  var minR=330;
     //  var maxR=408;
     //  var radiusRandom = Math.random() * (+maxR - +minR) + +minR;
@@ -232,34 +271,37 @@ populateManifestations(innerSolarSystem.masses);
 const massesList = document.querySelector("#masses-list");
 
 const animate = () => {
-    if (gameState == gameStateEnum.PLAY) {
-        cBackground.clearRect(0, 0, 2400, 1200);
-        cBackground.drawImage(bgimg, 0, 0, 2400, 1200);
-        for (i in stars) stars[i].render();
+    if (gameState == gameStateEnum.PLAY) { //only has to be rendered once
+        cBackground.clearRect(0, 0, 2400, 1200); //only has to be rendered once
+        cBackground.drawImage(bgimg, 0, 0, 2400, 1200); //only has to be rendered once
+        for (i in stars) stars[i].render(); //only has to be rendered once
 
-        skillbar.render();
+        skillbar.render(); //only has to be rendered once
 
         if (cd1 != null) cd1.render();
-        cd2.render();
-        cd3.render();
+        if (cd2 != null) cd2.render();
+        if (cd3 != null) cd3.render();
 
         planet.render();
         player.render(currentMouseX, currentMouseY);
 
 
+        if (meteor != null) meteor.tick();
+        // smokePar.tick();
+        // smokePar2.tick();
 
-        smokePar.tick();
-        smokePar2.tick();
 
-
-        if (shield != null) {
-            shield.render(currentMouseX, currentMouseY);
-        }
+        if (shield != null) shield.render(currentMouseX, currentMouseY);
 
         populateEnemies();
 
         for (i in explosions) {
             explosions[i].tick();
+        }
+
+        cBone.clearRect(0, 0, cBoneCanvas.width, cBoneCanvas.height);
+        for (i in bones) {
+            bones[i].render(bones[i].x, bones[i].y);
         }
 
         innerSolarSystem
@@ -298,9 +340,8 @@ const animate = () => {
 };
 
 function start() {
-
-    smokePar = new SmokeParticle(600, 600, 1); //392 244
-    smokePar2 = new SmokeParticle(620, 620, 2); //392 244
+    // smokePar = new SmokeParticle(600, 600, 1); //392 244
+    // smokePar2 = new SmokeParticle(620, 620, 2); //392 244
 
     avatar = new Avatar(10, 10, nameField.value, cAvatarCanvas);
     avatar.render();
@@ -382,12 +423,14 @@ function init() {
 //TODO atleast 3 weapons, we now have 1
 //TODO username and avatar
 
+//TODO add thrusters to player model
+
 //TODO make the other planets spin, all different speed (put stars behind planets)
 
 //TODO start building enemies into the game
 //TODO score system and score screen
 
-//TODO blackholes
+//TODO black holes
 
 //TODO difficulty setting
 

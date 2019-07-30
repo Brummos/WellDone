@@ -13,6 +13,8 @@ var cSkills = document.getElementById("canvas_skills").getContext('2d');
 var cSkillsCanvas = document.getElementById("canvas_skills");
 var cShield = document.getElementById("canvas_shield").getContext('2d');
 var cShieldCanvas = document.getElementById("canvas_shield");
+var cMeteor = document.getElementById("canvas_meteor").getContext('2d');
+var cMeteorCanvas = document.getElementById("canvas_meteor");
 
 var cSkillCD1 = document.getElementById("canvas_skill_cd1").getContext('2d');
 var cSkillCD1Canvas = document.getElementById("canvas_skill_cd1");

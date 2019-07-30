@@ -50,13 +50,14 @@ class nBodyProblem {
                         var indexX = Math.floor((massJ.x * scale) + (width / 2));
                         var indexY = Math.floor((massJ.y * scale) + (height / 2));
 
-                        massJ.bone.render(indexX, indexY);
+                        massJ.bone.setXY(indexX, indexY); //KAN BETER
+                        //massJ.bone.render(indexX, indexY);
 
                         var pixelData = gPlanet.getImageData(indexX, indexY, 1, 1).data;//event.offsetX, event.offsetY, 1, 1).data;
                         for (var zx = 0, n = pixelData.length; zx < n; zx += 4) {
                             //console.log(pixelData[zx + 3].toString());
 
-                            if (pixelData[zx + 3].toString() != 0) { //.toString() ????
+                            if (pixelData[zx + 3].toString() != 0) { //.toString() ???? //alpha channel
                                 massJ.bone.destroy();
                                 var explosion = new Explosion(indexX, indexY, 256, 256, 1, 2400, 1200);
                                 explosions.push(explosion);

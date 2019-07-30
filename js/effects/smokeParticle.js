@@ -8,7 +8,7 @@ class SmokeParticle {
         this.scaledWidth = this.scale * this.width;
         this.scaledHeight = this.scale * this.height;
         this.canvas = document.createElement('canvas');
-        this.canvas.id = "canvas_smokeparticle" + index;//explosions.length;
+        this.canvas.id = "canvas_smokepart" + index;//explosions.length;
         this.canvas.width = 2400;
         this.canvas.height = 1200;
         this.canvas.style.zzIndex = "8";
